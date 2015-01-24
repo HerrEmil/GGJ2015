@@ -14,7 +14,7 @@
     </div>
 
     <div class="full" id="crashSiteDay">
-        <div class="layer layer--fixed"></div>
+        <div class="layer layer--fixed" style="background-image: url(images/mgj-02.svg)"></div>
         <div class="layer layer--half"></div>
         <div class="layer layer--normal"></div>
         <div class="layer layer--twice"></div>
@@ -43,7 +43,6 @@
     importSVG('images/mgj-12.svg', '#crashSiteNight .layer--half', function(f) {});
     importSVG('images/mgj-13.svg', '#crashSiteNight .layer--normal', function(f) {});
     importSVG('images/mgj-14.svg', '#crashSiteNight .layer--twice', function(f) {});
-
     
     makeSceneMovable(container, layers);
     var container = document.querySelector('#crashSiteDay');
@@ -54,8 +53,13 @@
     ];
 
     makeSceneMovable(container, layers);
+    
     // Start the first scene
     switchScene('crashSiteDay');
+    var music = new Audio('Intro1');
+    var ambience = new Audio('amb/104320__proxima4__desert-simple');
+    music.play();
+    ambience.play();
     </script>
     </body>
 </html>
