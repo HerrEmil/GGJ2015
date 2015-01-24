@@ -36,13 +36,10 @@ function makeSceneMovable(container, layers) {
         layers[i].style.left = '0px';
         layers[i].style.backgroundPosition = '0px';
     }    
-    return removeAllEventListeners; 
 }
 
-var removeSceneMovable = function() {};
 
 function switchScene(sceneID) {
-    removeSceneMovable();
     // Hide the old scene
     var oldScene = document.getElementById(currentScene);
     oldScene.classList.add('hidden');
@@ -53,8 +50,6 @@ function switchScene(sceneID) {
 
     // Display the current scene
     container.classList.remove('hidden');
-
-    removeSceneMovable = makeSceneMovable(container, layers);
 }
 
 // up or down

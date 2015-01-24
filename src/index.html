@@ -6,18 +6,22 @@
 
     <body>
 
-    <div class="full hidden" id="crashSiteNight">
-        <div class="layer layer--fixed"></div>
-        <div class="layer layer--half"></div>
-        <div class="layer layer--normal"></div>
-        <div class="layer layer--twice"></div>
+    <div class="full" id="crashSiteDay">
+        <div class="layer layer--fixed" style="background-image: url(images/mgj-02.svg)" id="day-1"></div>
+        <div class="layer hidden" id="day-2"></div>
+        <div class="layer hidden" id="day-3"></div>
+        <div class="layer layer--half" id="day-4"></div>
+        <div class="layer layer--normal" id="day-5"></div>
+        <div class="layer layer--twice" id="day-6"></div>
     </div>
 
-    <div class="full" id="crashSiteDay">
-        <div class="layer layer--fixed" style="background-image: url(images/mgj-02.svg)"></div>
-        <div class="layer layer--half"></div>
-        <div class="layer layer--normal"></div>
-        <div class="layer layer--twice"></div>
+    <div class="full hidden" id="crashSiteNight">
+        <div class="layer layer--fixed" style="background-image: url(images/mgj-09.svg)" id="night-1"></div>
+        <div class="layer hidden" id="night-2"></div>
+        <div class="layer hidden" id="night-3"></div>
+        <div class="layer layer--half" id="night-4"></div>
+        <div class="layer layer--normal" id="night-5"></div>
+        <div class="layer layer--twice" id="night-6"></div>
     </div>
 
     <script src="bower_components/snap.svg/dist/snap.svg-min.js"></script>
@@ -27,31 +31,40 @@
     <script src="scripts/scripts.js"></script>
     <script>
 
-    var container = document.querySelector('#crashSiteNight');
+    // Load night images
+    importSVG('images/mgj-10.svg', '#night-2', function(f) {});
+    importSVG('images/mgj-11.svg', '#night-3', function(f) {});
+    importSVG('images/mgj-12.svg', '#night-4', function(f) {});
+    importSVG('images/mgj-13.svg', '#night-5', function(f) {});
+    importSVG('images/mgj-14.svg', '#night-6', function(f) {});
+
+    // Make night layers moveable
+    var nightContainer = document.querySelector('#crashSiteNight');
     var layers = [
-        document.querySelector('#crashSiteNight .layer--half'),
-        document.querySelector('#crashSiteNight .layer--normal'),
-        document.querySelector('#crashSiteNight .layer--twice')
+        document.querySelector('#night-2'),
+        document.querySelector('#night-3'),
+        document.querySelector('#night-4'),
+        document.querySelector('#night-5'),
+        document.querySelector('#night-6')
     ];
+    makeSceneMovable(nightContainer, layers);
 
-    // Day
-    importSVG('images/mgj-05.svg', '#crashSiteDay .layer--half', function(f) {});
-    importSVG('images/mgj-06.svg', '#crashSiteDay .layer--normal', function(f) {});
-    importSVG('images/mgj-07.svg', '#crashSiteDay .layer--twice', function(f) {});
-
-    // Night
-    importSVG('images/mgj-12.svg', '#crashSiteNight .layer--half', function(f) {});
-    importSVG('images/mgj-13.svg', '#crashSiteNight .layer--normal', function(f) {});
-    importSVG('images/mgj-14.svg', '#crashSiteNight .layer--twice', function(f) {});
+    // Load day images
+    importSVG('images/mgj-03.svg', '#day-2', function(f) {});
+    importSVG('images/mgj-04.svg', '#day-3', function(f) {});
+    importSVG('images/mgj-05.svg', '#day-4', function(f) {});
+    importSVG('images/mgj-06.svg', '#day-5', function(f) {});
+    importSVG('images/mgj-07.svg', '#day-6', function(f) {});
     
-    makeSceneMovable(container, layers);
+    // Make day layers moveable
     var container = document.querySelector('#crashSiteDay');
     var layers = [
-        document.querySelector('#crashSiteDay .layer--half'),
-        document.querySelector('#crashSiteDay .layer--normal'),
-        document.querySelector('#crashSiteDay .layer--twice')
+        document.querySelector('#day-2'),
+        document.querySelector('#day-3'),
+        document.querySelector('#day-4'),
+        document.querySelector('#day-5'),
+        document.querySelector('#day-6')
     ];
-
     makeSceneMovable(container, layers);
     
     // Start the first scene
