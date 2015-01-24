@@ -19,7 +19,9 @@ Mood1
 Sound effects
 =============
 
-sfx/175182__seidhepriest__vibraslap-4
+sfx/175182__seidhepriest__vibraslap-4 (rattlesnake)
+sfx/166819__quistard__water-bubble-7 (water bottle)
+sfx/231840__skepticdosh__match-strike (matches)
 
 Ambience
 ========
