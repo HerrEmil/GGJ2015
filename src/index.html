@@ -6,8 +6,15 @@
 
     <body>
 
-    <div class="full">
+    <div class="full hidden" id="crashSiteNight">
         <div class="layer layer--fixed"></div>
+        <div class="layer layer--half"></div>
+        <div class="layer layer--normal"></div>
+        <div class="layer layer--twice"></div>
+    </div>
+
+    <div class="full" id="crashSiteDay">
+        <div class="layer layer--fixed" style="background-image: url(images/mgj-02.svg)"></div>
         <div class="layer layer--half"></div>
         <div class="layer layer--normal"></div>
         <div class="layer layer--twice"></div>
@@ -18,11 +25,12 @@
     <script src="scripts/normalizedEvents.js"></script>
     <script src="scripts/scripts.js"></script>
     <script>
-    var container = document.querySelector('.full');
+
+    var container = document.querySelector('#crashSiteNight');
     var layers = [
-        document.querySelector('.layer--half'),
-        document.querySelector('.layer--normal'),
-        document.querySelector('.layer--twice')
+        document.querySelector('#crashSiteNight .layer--half'),
+        document.querySelector('#crashSiteNight .layer--normal'),
+        document.querySelector('#crashSiteNight .layer--twice')
     ];
 
     function importSVG(url, querySelector, addEventsFn) {
@@ -35,16 +43,36 @@
         });
     }
 
-    importSVG('images/mgj-02.svg', '.layer--fixed', function(f) {
+    // Day
+    importSVG('images/mgj-02.svg', '#crashSiteDay .layer--fixed', function(f) {
         //var g = f.select('g');
         //g.select('circle').click(function(){});
     });
-    importSVG('images/mgj-05.svg', '.layer--half', function(f) {});
-    importSVG('images/mgj-06.svg', '.layer--normal', function(f) {});
-    importSVG('images/mgj-07.svg', '.layer--twice', function(f) {});
+    importSVG('images/mgj-05.svg', '#crashSiteDay .layer--half', function(f) {});
+    importSVG('images/mgj-06.svg', '#crashSiteDay .layer--normal', function(f) {});
+    importSVG('images/mgj-07.svg', '#crashSiteDay .layer--twice', function(f) {});
+
+    // Night
+    importSVG('images/mgj-09.svg', '#crashSiteNight .layer--fixed', function(f) {
+        //var g = f.select('g');
+        //g.select('circle').click(function(){});
+    });
+    importSVG('images/mgj-12.svg', '#crashSiteNight .layer--half', function(f) {});
+    importSVG('images/mgj-13.svg', '#crashSiteNight .layer--normal', function(f) {});
+    importSVG('images/mgj-14.svg', '#crashSiteNight .layer--twice', function(f) {});
 
     
     makeSceneMovable(container, layers);
+    var container = document.querySelector('#crashSiteDay');
+    var layers = [
+        document.querySelector('#crashSiteDay .layer--half'),
+        document.querySelector('#crashSiteDay .layer--normal'),
+        document.querySelector('#crashSiteDay .layer--twice')
+    ];
+
+    makeSceneMovable(container, layers);
+    // Start the first scene
+    switchScene('crashSiteDay');
     </script>
     </body>
 </html>

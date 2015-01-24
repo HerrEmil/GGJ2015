@@ -41,3 +41,7 @@ body{
     bottom: -20%;
     pointer-events: none;
 }
+
+.hidden {
+    visibility: hidden;
+}
