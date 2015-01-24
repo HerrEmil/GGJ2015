@@ -23,15 +23,13 @@ body{
     background-image:url(../images/mgj-01.svg);
 }
 .layer--half {
-    transform: scale(0.5);
     background-image: url(../images/mgj-02.svg);
 }
 .layer--normal {
+    transform: scale(2);
     background-image: url(../images/mgj-03.svg);
 }
 .layer--twice {
-    transform: scale(2);
+    transform: scale(4);
     background-image: url(../images/mgj-04.svg);
 }
-
-{ width:367; height:459px;  }
