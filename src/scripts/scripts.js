@@ -10,8 +10,8 @@ function drag (e) {
     var scale = [0.5, 1, 2];
     for(var i=0; i<3; i++){
         layers[i].style.backgroundPosition = diffX + 'px';
+        currentPosition = diffX;
     }
-    console.log(diffX);
 }
 
 function scrollTo(x){
@@ -19,9 +19,10 @@ function scrollTo(x){
 }
 
 var startX;
+var currentPosition = 0;
 
 full.addEventListener('mousedown', function(e){
-    startX = e.offsetX;
+    startX = e.offsetX - currentPosition;
     full.addEventListener('mousemove', drag);
     full.addEventListener('mouseup', function(){
         full.removeEventListener('mousemove', drag);
