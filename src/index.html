@@ -6,25 +6,26 @@
 
     <body>
 
-    <div class="full">
-        <div class="layer layer--fixed"></div>
-        <div class="layer layer--half"></div>
-        <div class="layer layer--normal"></div>
-        <div class="layer layer--twice"></div>
+    <div class="full hidden" id="crashSiteNight">
+        <div class="layer layer--fixed" style="background-image: url(images/mgj-09.svg)"></div>
+        <div class="layer layer--half" style="background-image: url(images/mgj-12.svg)"></div>
+        <div class="layer layer--normal" style="background-image: url(images/mgj-13.svg)"></div>
+        <div class="layer layer--twice" style="background-image: url(images/mgj-14.svg)"></div>
+    </div>
+
+    <div class="full" id="crashSiteDay">
+        <div class="layer layer--fixed" style="background-image: url(images/mgj-02.svg)"></div>
+        <div class="layer layer--half" style=" background-image: url(images/mgj-05.svg)"></div>
+        <div class="layer layer--normal" style="background-image: url(images/mgj-06.svg)"></div>
+        <div class="layer layer--twice" style="background-image: url(images/mgj-07.svg)"></div>
     </div>
 
     <script src="scripts/sound.js"></script>
     <script src="scripts/normalizedEvents.js"></script>
     <script src="scripts/scripts.js"></script>
     <script>
-    var container = document.querySelector('.full');
-    var layers = [
-        document.querySelector('.layer--half'),
-        document.querySelector('.layer--normal'),
-        document.querySelector('.layer--twice')
-    ];
-
-    makeSceneMovable(container, layers);
+        // Start the first scene
+        switchScene('crashSiteDay');
     </script>
     </body>
 </html>

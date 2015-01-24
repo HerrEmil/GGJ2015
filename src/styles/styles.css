@@ -21,18 +21,18 @@ body{
     background-repeat: repeat-x;
 }
 .layer--fixed {
-    background-image:url(../images/mgj-02.svg);
 }
 .layer--half {
-    background-image: url(../images/mgj-05.svg);
 }
 .layer--normal {
     transform: scale(2);
-    background-image: url(../images/mgj-06.svg);
     top: 17%;
 }
 .layer--twice {
     transform: scale(4);
-    background-image: url(../images/mgj-07.svg);
     top: 36%;
+}
+
+.hidden {
+    visibility: hidden;
 }
