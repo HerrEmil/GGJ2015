@@ -1,0 +1,35 @@
+body{
+    padding:0;
+    margin: 0;
+    overflow: hidden;
+}
+.full {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: none;
+}
+.layer {
+    pointer-events: none;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+.layer--fixed {
+    background-image:url(../images/mgj-01.svg);
+}
+.layer--half {
+    transform: scale(0.5);
+    background-image: url(../images/mgj-02.svg);
+}
+.layer--normal {
+    background-image: url(../images/mgj-03.svg);
+}
+.layer--twice {
+    transform: scale(2);
+    background-image: url(../images/mgj-04.svg);
+}
+
+{ width:367; height:459px;  }
