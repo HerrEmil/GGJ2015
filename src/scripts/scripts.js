@@ -9,10 +9,9 @@ var startX;
 var currentPosition = 0;
 
 function drag (e) {
-    var diffX = e.offsetX - startX;
-    var scale = [0.5, 1, 2];
+    var diffX = (e.offsetX - startX);
     for(var i=0; i<3; i++){
-        layers[i].style.backgroundPosition = diffX + 'px';
+        layers[i].style.backgroundPosition = diffX * 0.5 + 'px';
         currentPosition = diffX;
     }
 }
