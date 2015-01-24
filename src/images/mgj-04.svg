@@ -1,8 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Generator: Adobe Illustrator 17.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 width="4800px" height="900px" viewBox="0 0 4800 900" enable-background="new 0 0 4800 900" xml:space="preserve">
-<polygon fill="#E88800" points="0,517.712 137,403 505,544.707 713,403 1033,595 1281,517.712 1729,659 1873,403 2400,619 2609,450 
-	3169,659 3465,587 3705,755 4033,517.712 4465,755 4649,544.707 4800,579 4800,900 0,900 "/>
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="4800px"
+	 height="900px" viewBox="0 0 4800 900" enable-background="new 0 0 4800 900" xml:space="preserve">
+<g id="Layer_5">
+</g>
+<g id="Layer_3">
+</g>
+<g id="Layer_2">
+	<g>
+		<polygon fill="#C78032" points="0,327.617 285.785,267.398 961,395.617 1361,267.398 1729,367.617 2258.805,267.398 2925,415.617 
+			3269.906,285.728 3641.943,405.74 3849,303.049 4235.32,385.416 4605.04,267.398 4799.871,327.617 4800,900 0,900 		"/>
+		<polygon fill="#B77430" points="961,395.617 605,475.617 891.059,382.336 		"/>
+		<polygon fill="#B77430" points="1729,367.617 1531,397.119 1673,354.792 		"/>
+		<polygon fill="#B77430" points="2925,415.617 3100.571,451.715 2974.118,397.119 		"/>
+		<polygon fill="#B77430" points="3641.943,405.74 3909,476.176 3683.464,385.148 		"/>
+		<polygon fill="#B77430" points="4235.32,385.416 4587.997,471.005 4293.126,366.964 		"/>
+	</g>
+</g>
+<g id="Layer_1">
+</g>
+<g id="measurement_x5F_tools">
+</g>
 </svg>

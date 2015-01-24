@@ -10,6 +10,7 @@ body{
     overflow: hidden;
     margin: auto;
     top: 0; left: 0; bottom: 0; right: 0;
+    background-color: #FBE4A8;
 }
 .layer {
     pointer-events: none;
@@ -17,19 +18,21 @@ body{
     height: 100%;
     width: 100%;
     background-size: contain;
-    background-repeat: no-repeat;
+    background-repeat-y: no-repeat;
 }
 .layer--fixed {
-    background-image:url(../images/mgj-01.svg);
+    background-image:url(../images/mgj-02.svg);
 }
 .layer--half {
-    background-image: url(../images/mgj-02.svg);
+    background-image: url(../images/mgj-03.svg);
 }
 .layer--normal {
     transform: scale(2);
-    background-image: url(../images/mgj-03.svg);
+    background-image: url(../images/mgj-04.svg);
+    top: 17%;
 }
 .layer--twice {
     transform: scale(4);
-    background-image: url(../images/mgj-04.svg);
+    background-image: url(../images/mgj-05.svg);
+    top: 36%;
 }
