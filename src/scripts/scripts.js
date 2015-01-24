@@ -4,8 +4,9 @@ function makeSceneMovable(container, layers) {
 
     function drag (e) {
         var diffX = (e.layerX - startX);
+        var factors = [0.25, 0.5, 1];
         for(var i=0; i<3; i++){
-            layers[i].style.backgroundPosition = diffX * 0.5 + 'px';
+            layers[i].style.left = diffX * factors[i] + 'px';
             currentPosition = diffX;
         }
     }
@@ -20,6 +21,6 @@ function makeSceneMovable(container, layers) {
 
     // Start positions
     for(var i=0; i<3; i++){
-        layers[i].style.backgroundPosition = '0px';
+        layers[i].style.left = '0px';
     }    
 }
