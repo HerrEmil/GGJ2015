@@ -10,11 +10,11 @@ function makeSceneMovable(container, layers) {
         }
     }
 
-    container.addEventListener('mousedown', function(e){
+    container.addEventListener(normalizedEvents.down, function(e){
         startX = e.layerX - currentPosition;
-        container.addEventListener('mousemove', drag);
-        container.addEventListener('mouseup', function(){
-            container.removeEventListener('mousemove', drag);
+        container.addEventListener(normalizedEvents.move, drag);
+        container.addEventListener(normalizedEvents.up, function(){
+            container.removeEventListener(normalizedEvents.move, drag);
         })
     });
 
