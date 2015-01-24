@@ -15,6 +15,9 @@ Music
 
 Intro1
 Mood1
+Problem
+Death
+
 
 Sound effects
 =============
@@ -42,6 +45,7 @@ function Audio(key) {
 
 // decr: 0.005 is a good value
 function fadeSound(el, decr) {
+    if(!el) return;
     if(el.volume > decr) {
         el.volume -= decr;
         setTimeout (function(){
