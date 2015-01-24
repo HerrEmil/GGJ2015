@@ -53,4 +53,21 @@ function switchScene(sceneID) {
 
     // Display the current scene
     container.classList.remove('hidden');
+
+    removeSceneMovable = makeSceneMovable(container, layers);
+}
+
+// up or down
+function switchLayer(direction) {
+    if (direction === 'up' /* and you are not already all the way up */) {
+        // display one more layer
+        // play zoom animation
+        // hide old bottom layer
+        // update classes
+    } else if (direction === 'down' /*and you are not already all the way down*/) {
+        // display one more layer
+        // play zoom animation
+        // hide old bottom layer
+        // update classes
+    }
 }
