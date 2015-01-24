@@ -7,7 +7,7 @@
     <body>
 
     <div class="full hidden" id="crashSiteNight">
-        <div class="layer layer--fixed"></div>
+        <div class="layer layer--fixed" style="background-image: url(images/mgj-09.svg)"></div>
         <div class="layer layer--half"></div>
         <div class="layer layer--normal"></div>
         <div class="layer layer--twice"></div>
@@ -44,19 +44,11 @@
     }
 
     // Day
-    importSVG('images/mgj-02.svg', '#crashSiteDay .layer--fixed', function(f) {
-        //var g = f.select('g');
-        //g.select('circle').click(function(){});
-    });
     importSVG('images/mgj-05.svg', '#crashSiteDay .layer--half', function(f) {});
     importSVG('images/mgj-06.svg', '#crashSiteDay .layer--normal', function(f) {});
     importSVG('images/mgj-07.svg', '#crashSiteDay .layer--twice', function(f) {});
 
     // Night
-    importSVG('images/mgj-09.svg', '#crashSiteNight .layer--fixed', function(f) {
-        //var g = f.select('g');
-        //g.select('circle').click(function(){});
-    });
     importSVG('images/mgj-12.svg', '#crashSiteNight .layer--half', function(f) {});
     importSVG('images/mgj-13.svg', '#crashSiteNight .layer--normal', function(f) {});
     importSVG('images/mgj-14.svg', '#crashSiteNight .layer--twice', function(f) {});
