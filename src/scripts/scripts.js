@@ -5,6 +5,9 @@ var layers = [
     document.querySelector('.layer--twice')
 ];
 
+var startX;
+var currentPosition = 0;
+
 function drag (e) {
     var diffX = e.offsetX - startX;
     var scale = [0.5, 1, 2];
@@ -14,13 +17,6 @@ function drag (e) {
     }
 }
 
-function scrollTo(x){
-
-}
-
-var startX;
-var currentPosition = 0;
-
 full.addEventListener('mousedown', function(e){
     startX = e.offsetX - currentPosition;
     full.addEventListener('mousemove', drag);
@@ -28,3 +24,8 @@ full.addEventListener('mousedown', function(e){
         full.removeEventListener('mousemove', drag);
     })
 });
+
+// Start positions
+for(var i=0; i<3; i++){
+    layers[i].style.backgroundPosition = '0px';
+}
