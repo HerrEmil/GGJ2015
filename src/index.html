@@ -23,6 +23,7 @@
     <script src="bower_components/snap.svg/dist/snap.svg-min.js"></script>
     <script src="scripts/sound.js"></script>
     <script src="scripts/normalizedEvents.js"></script>
+    <script src="scripts/importSVG.js"></script>
     <script src="scripts/scripts.js"></script>
     <script>
 
@@ -32,16 +33,6 @@
         document.querySelector('#crashSiteNight .layer--normal'),
         document.querySelector('#crashSiteNight .layer--twice')
     ];
-
-    function importSVG(url, querySelector, addEventsFn) {
-        var s = Snap(querySelector);
-        Snap.load(url, function (f) {
-            var g = f.select('g');
-            // Event handlers for specific objects...
-            addEventsFn(f);
-            s.append(f);
-        });
-    }
 
     // Day
     importSVG('images/mgj-05.svg', '#crashSiteDay .layer--half', function(f) {});
