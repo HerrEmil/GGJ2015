@@ -25,6 +25,8 @@ Sound effects
 sfx/175182__seidhepriest__vibraslap-4 (rattlesnake)
 sfx/166819__quistard__water-bubble-7 (water bottle)
 sfx/231840__skepticdosh__match-strike (matches)
+sfx/139901__y89312__33 (howling wolf)
+sfx/190595__jaylew1987__dog-snarl-self-made (dog bark)
 
 Ambience
 ========
