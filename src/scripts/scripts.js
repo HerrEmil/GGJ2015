@@ -1,4 +1,6 @@
-var currentScene = 'crashSiteDay';
+var currentScene = 'crashSiteDay',
+    currentLayer = 5,
+    itIsDay = true;
 
 function makeSceneMovable(container, layers) {
     var startX;
@@ -50,12 +52,18 @@ function switchScene(sceneID) {
 
     // Display the current scene
     container.classList.remove('hidden');
+
+    // assuming there's only two scenes for now
+    itIsDay = !itIsDay;
 }
 
 // up or down
 function switchLayer(direction) {
-    if (direction === 'up' /* and you are not already all the way up */) {
-        // display one more layer
+    // If you're going up, and you're not already in the top layer
+    if (direction === 'up' && currentLayer > 1) {
+        // display the layer above you
+        var str = ''
+        document.getElementById()
         // play zoom animation
         // hide old bottom layer
         // update classes
