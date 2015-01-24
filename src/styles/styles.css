@@ -13,7 +13,6 @@ body{
     background-color: #FBE4A8;
 }
 .layer {
-    pointer-events: none;
     position: absolute;
     height: 100%;
     width: 100%;
@@ -21,16 +20,26 @@ body{
     background-repeat: repeat-x;
 }
 .layer--fixed {
+    pointer-events: none;
 }
 .layer--half {
+    pointer-events: none;
+    bottom:0;
+    width: 800px;
+    height: 225px;
 }
 .layer--normal {
+    width: 1200px;
+    height: 225px;
+    bottom: -10%;
     transform: scale(2);
-    top: 17%;
 }
 .layer--twice {
+    width: 1200px;
+    height: 225px;
     transform: scale(4);
-    top: 36%;
+    bottom: -20%;
+    pointer-events: none;
 }
 
 .hidden {

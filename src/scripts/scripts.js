@@ -6,8 +6,9 @@ function makeSceneMovable(container, layers) {
 
     function drag (e) {
         var diffX = (e.layerX - startX);
+        var factors = [0.25, 0.5, 1];
         for(var i=0; i<3; i++){
-            layers[i].style.backgroundPosition = diffX * 0.5 + 'px';
+            layers[i].style.left = diffX * factors[i] + 'px';
             currentPosition = diffX;
         }
     }
@@ -32,9 +33,9 @@ function makeSceneMovable(container, layers) {
 
     // Start positions
     for(var i=0; i<3; i++){
+        layers[i].style.left = '0px';
         layers[i].style.backgroundPosition = '0px';
-    }
-
+    }    
     return removeAllEventListeners; 
 }
 
@@ -49,29 +50,7 @@ function switchScene(sceneID) {
     currentScene = sceneID;
 
     var container = document.getElementById(sceneID);
-    var layers = [
-        container.getElementsByClassName("layer--half")[0],
-        container.getElementsByClassName("layer--normal")[0],
-        container.getElementsByClassName("layer--twice")[0]
-    ];
 
     // Display the current scene
     container.classList.remove('hidden');
-
-    removeSceneMovable = makeSceneMovable(container, layers);
-}
-
-// up or down
-function switchLayer(direction) {
-    if (direction === 'up' /* and you are not already all the way up */) {
-        // display one more layer
-        // play zoom animation
-        // hide old bottom layer
-        // update classes
-    } else if (direction === 'down' /*and you are not already all the way down*/) {
-        // display one more layer
-        // play zoom animation
-        // hide old bottom layer
-        // update classes
-    }
 }

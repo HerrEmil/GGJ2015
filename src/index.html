@@ -7,29 +7,72 @@
     <body>
 
     <div class="full hidden" id="crashSiteNight">
-        <div class="layer layer--fixed" style="background-image: url(images/mgj-09.svg)"></div>
-        <div class="layer hidden" style=" background-image: url(images/mgj-10.svg)"></div>
-        <div class="layer hidden" style=" background-image: url(images/mgj-11.svg)"></div>
-        <div class="layer layer--half" style="background-image: url(images/mgj-12.svg)"></div>
-        <div class="layer layer--normal" style="background-image: url(images/mgj-13.svg)"></div>
-        <div class="layer layer--twice" style="background-image: url(images/mgj-14.svg)"></div>
+        <div class="layer layer--fixed"></div>
+        <div class="layer layer--half"></div>
+        <div class="layer layer--normal"></div>
+        <div class="layer layer--twice"></div>
     </div>
 
     <div class="full" id="crashSiteDay">
-        <div class="layer layer--fixed" style="background-image: url(images/mgj-02.svg)"></div>
-        <div class="layer hidden" style=" background-image: url(images/mgj-03.svg)"></div>
-        <div class="layer hidden" style=" background-image: url(images/mgj-04.svg)"></div>
-        <div class="layer layer--half" style=" background-image: url(images/mgj-05.svg)"></div>
-        <div class="layer layer--normal currentLayer" style="background-image: url(images/mgj-06.svg)"></div>
-        <div class="layer layer--twice" style="background-image: url(images/mgj-07.svg)"></div>
+        <div class="layer layer--fixed"></div>
+        <div class="layer layer--half"></div>
+        <div class="layer layer--normal"></div>
+        <div class="layer layer--twice"></div>
     </div>
 
+    <script src="bower_components/snap.svg/dist/snap.svg-min.js"></script>
     <script src="scripts/sound.js"></script>
     <script src="scripts/normalizedEvents.js"></script>
     <script src="scripts/scripts.js"></script>
     <script>
-        // Start the first scene
-        switchScene('crashSiteDay');
+
+    var container = document.querySelector('#crashSiteNight');
+    var layers = [
+        document.querySelector('#crashSiteNight .layer--half'),
+        document.querySelector('#crashSiteNight .layer--normal'),
+        document.querySelector('#crashSiteNight .layer--twice')
+    ];
+
+    function importSVG(url, querySelector, addEventsFn) {
+        var s = Snap(querySelector);
+        Snap.load(url, function (f) {
+            var g = f.select('g');
+            // Event handlers for specific objects...
+            addEventsFn(f);
+            s.append(f);
+        });
+    }
+
+    // Day
+    importSVG('images/mgj-02.svg', '#crashSiteDay .layer--fixed', function(f) {
+        //var g = f.select('g');
+        //g.select('circle').click(function(){});
+    });
+    importSVG('images/mgj-05.svg', '#crashSiteDay .layer--half', function(f) {});
+    importSVG('images/mgj-06.svg', '#crashSiteDay .layer--normal', function(f) {});
+    importSVG('images/mgj-07.svg', '#crashSiteDay .layer--twice', function(f) {});
+
+    // Night
+    importSVG('images/mgj-09.svg', '#crashSiteNight .layer--fixed', function(f) {
+        //var g = f.select('g');
+        //g.select('circle').click(function(){});
+    });
+    importSVG('images/mgj-12.svg', '#crashSiteNight .layer--half', function(f) {});
+    importSVG('images/mgj-13.svg', '#crashSiteNight .layer--normal', function(f) {});
+    importSVG('images/mgj-14.svg', '#crashSiteNight .layer--twice', function(f) {});
+
+    
+    makeSceneMovable(container, layers);
+    var container = document.querySelector('#crashSiteDay');
+    var layers = [
+        document.querySelector('#crashSiteDay .layer--half'),
+        document.querySelector('#crashSiteDay .layer--normal'),
+        document.querySelector('#crashSiteDay .layer--twice')
+    ];
+
+    makeSceneMovable(container, layers);
+    // Start the first scene
+    switchScene('crashSiteDay');
     </script>
     </body>
 </html>
