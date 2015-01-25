@@ -14,6 +14,7 @@ function switchScene(sceneID) {
         var mood = new Audio('Mood1');
         amb.play();
         mood.play();
+        bubble([26, 27, 28]);
     }
 }
 
