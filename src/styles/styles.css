@@ -38,7 +38,7 @@ body{
 /*    width: 1200px;
     height: 225px;*/
     transform: scale(4);
-    bottom: -173%;
+    bottom: -200%;
     pointer-events: none;
 }
 
