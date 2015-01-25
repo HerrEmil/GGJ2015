@@ -28,45 +28,12 @@
     <script src="scripts/sound.js"></script>
     <script src="scripts/normalizedEvents.js"></script>
     <script src="scripts/importSVG.js"></script>
+    <script src="scripts/setupDay.js"></script>
     <script src="scripts/scripts.js"></script>
     <script>
 
-    // Load night images
-    importSVG('images/mgj-10.svg', '#night-2', function(f) {});
-    importSVG('images/mgj-11.svg', '#night-3', function(f) {});
-    importSVG('images/mgj-12.svg', '#night-4', function(f) {});
-    importSVG('images/mgj-13.svg', '#night-5', function(f) {});
-    importSVG('images/mgj-14.svg', '#night-6', function(f) {});
-
-    // Make visisble night layers moveable
-    var container = document.querySelector('#crashSiteNight');
-    var layers = [
-        document.querySelector('#crashSiteNight .layer--half'),
-        document.querySelector('#crashSiteNight .layer--normal'),
-        document.querySelector('#crashSiteNight .layer--twice')
-    ];
-    makeSceneMovable(container, layers);
-
-    // Load day images
-    importSVG('images/mgj-03.svg', '#day-2', function(f) {});
-    importSVG('images/mgj-04.svg', '#day-3', function(f) {});
-    importSVG('images/mgj-05.svg', '#day-4', function(f) {
-        f.select('#cactus').click(function(){
-            alert('FRIGGING CACTUS STING');
-        });
-    });
-    importSVG('images/mgj-06.svg', '#day-5', function(f) {});
-    importSVG('images/mgj-07.svg', '#day-6', function(f) {});
-    
-    // Make visible day layers moveable
-    var container = document.querySelector('#crashSiteDay');
-    var layers = [
-        document.querySelector('#crashSiteDay .layer--half'),
-        document.querySelector('#crashSiteDay .layer--normal'),
-        document.querySelector('#crashSiteDay .layer--twice')
-    ];
-    makeSceneMovable(container, layers);
-    
+    setupNight();
+    setupDay();
     // Start the first scene
     switchScene('crashSiteDay');
     var music = new Audio('Intro1');
