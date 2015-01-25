@@ -38,6 +38,7 @@ amb/138288__kangaroovindaloo__desert-at-night
 
 
 function Audio(key) {
+    console.log('Audio ' + key);
     var el = document.createElement('audio');
     var srcMP3 = '<source src="snd/'+key+'.mp3" type=\'audio/mpeg; codecs="mp3"\'>';
     var srcOGG = '<source src="snd/'+key+'.mp3" type=\'audio/ogg; codecs="vorbis"\'>';

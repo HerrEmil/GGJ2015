@@ -4,6 +4,11 @@ function clickHandler(id){
         var obj = story[key];
         if(obj.id === id) {
             console.log(story[key]);
+            if(story[key].sound) {
+                console.log('Playing ' + story[key].sound);
+                var a = new Audio(story[key].sound);
+                a.play();
+            }
             if(obj.premise){
                 if(story[obj.premise].fulfilled) {
                     bubble(obj.success);

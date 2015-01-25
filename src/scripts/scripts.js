@@ -9,6 +9,12 @@ function switchScene(sceneID) {
     newScene.classList.remove('hidden');
     dayOrNight = sceneID;
     console.log('It is now ' + dayOrNight);
+    if(sceneID === 'night') {
+        var amb = new Audio('amb/138288__kangaroovindaloo__desert-at-night');
+        var mood = new Audio('Mood1');
+        amb.play();
+        mood.play();
+    }
 }
 
 // up or down
