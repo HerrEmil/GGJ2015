@@ -1,21 +1,13 @@
-var currentScene = 'day',
-    currentLayer = 5,
+var currentLayer = 5,
     dayOrNight = 'night';
 
 function switchScene(sceneID) {
     // Hide the old scene
-    var oldScene = document.getElementById(currentScene);
+    var oldScene = document.getElementById(dayOrNight);
+    var newScene = document.getElementById(sceneID);
     oldScene.classList.add('hidden');
-
-    currentScene = sceneID;
-
-    var container = document.getElementById(sceneID);
-
-    // Display the current scene
-    container.classList.remove('hidden');
-
-    // assuming there's only two scenes for now, 1 day, 2 night
-    dayOrNight = (dayOrNight === 'day' ? 'night' : 'day');
+    newScene.classList.remove('hidden');
+    dayOrNight = sceneID;
     console.log('It is now ' + dayOrNight);
 }
 
