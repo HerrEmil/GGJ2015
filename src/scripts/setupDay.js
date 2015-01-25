@@ -12,7 +12,10 @@ function clickHandler(id){
                     alert(obj.locked);
                 }
             } else {
-                obj.fulfilled = true;
+                if(!obj.fulfilled){
+                    alert(obj.success);
+                    obj.fulfilled = true;
+                }
             }
         }
     }

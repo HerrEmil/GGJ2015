@@ -1,7 +1,7 @@
 var story = {
     'clicking tent': {
         id:      'tent',
-        success: '- Oh no! There is a snake in front of the tent!'
+        success: ' - Look, a tent! Let’s set up camp before night falls.'
     },
     'getting a club': {
         id:      'dead_x5F_tree_3_',
@@ -35,5 +35,9 @@ var story = {
     'EXTRA TEXT meeting the wolf': {
         id:      'wolf_1_',
         success: ' - There is a scary wolf here! - Let’s go back!',
+    },
+    'EXTRA TEXT cannot sleep': {
+        id:      'tent_2_',
+        success: ' - We cannot sleep before the wolf stops howling!',
     }
 };
