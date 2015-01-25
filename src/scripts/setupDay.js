@@ -1,4 +1,4 @@
-function setupDay() {
+function setupDay(container) {
     // Load day images
     importSVG('images/mgj-03.svg', '#day-2', function(f) {});
     importSVG('images/mgj-04.svg', '#day-3', function(f) {});
@@ -11,11 +11,10 @@ function setupDay() {
     importSVG('images/mgj-07.svg', '#day-6', function(f) {});
 
     // Make visible day layers moveable
-    var container = document.querySelector('#crashSiteDay');
     var layers = [
-        document.querySelector('#crashSiteDay .layer--half'),
-        document.querySelector('#crashSiteDay .layer--normal'),
-        document.querySelector('#crashSiteDay .layer--twice')
+        container.querySelector('.layer--half'),
+        container.querySelector('.layer--normal'),
+        container.querySelector('.layer--twice')
     ];
     makeSceneMovable(container, layers);
     return container;

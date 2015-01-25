@@ -29,11 +29,12 @@
     <script src="scripts/normalizedEvents.js"></script>
     <script src="scripts/importSVG.js"></script>
     <script src="scripts/setupDay.js"></script>
+    <script src="scripts/setupNight.js"></script>
     <script src="scripts/scripts.js"></script>
     <script>
 
-    setupNight();
-    setupDay();
+    setupNight(document.querySelector('#crashSiteNight'));
+    setupDay(document.querySelector('#crashSiteDay'));
     // Start the first scene
     switchScene('crashSiteDay');
     var music = new Audio('Intro1');
