@@ -4,7 +4,7 @@
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1600 900" enable-background="new 0 0 1600 900" xml:space="preserve">
 <g id="Layer_1">
 	<radialGradient id="SVGID_1_" cx="800" cy="342.8386" r="316.6649" gradientUnits="userSpaceOnUse">
-		<stop  offset="0" style="stop-color:#FBE4B1"/>
+		<stop  offset="0" style="stop-color:#FBE4CE"/>
 		<stop  offset="0.5397" style="stop-color:#F2E7CE"/>
 		<stop  offset="1" style="stop-color:#FFFFFF"/>
 	</radialGradient>
