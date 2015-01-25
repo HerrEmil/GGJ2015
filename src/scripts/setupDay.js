@@ -1,5 +1,21 @@
 function clickHandler(id){
-    console.log('clickHandler', id);
+    console.log(id);
+    for(var key in story){
+        var obj = story[key];
+        if(obj.id === id) {
+            console.log(story[key]);
+            if(obj.premise){
+                if(story[obj.premise].fulfilled) {
+                    alert(obj.success);
+                    obj.fulfilled = true;
+                } else {
+                    alert(obj.locked);
+                }
+            } else {
+                obj.fulfilled = true;
+            }
+        }
+    }
 }
 
 function handleClicks(f, ids) {
