@@ -15,31 +15,31 @@ body{
 .layer {
     position: absolute;
     height: 100%;
-    width: 100%;
+    width: 300%;
     background-size: contain;
     background-repeat: repeat-x;
 }
-.layer--fixed {
+.layer--fixed {1200px
     pointer-events: none;
 }
 .layer--half {
     
-    bottom:0;
-    width: 800px;
-    height: 225px;
+    bottom: -33%;
+/*    width: 800px;
+    height: 225px;*/
 }
 .layer--normal {
     pointer-events: none;
-    width: 1200px;
-    height: 225px;
-    bottom: -10%;
+    /*width: 1200px;
+    height: 225px;*/
+    bottom: -84%;
     transform: scale(2);
 }
 .layer--twice {
-    width: 1200px;
-    height: 225px;
+/*    width: 1200px;
+    height: 225px;*/
     transform: scale(4);
-    bottom: -20%;
+    bottom: -173%;
     pointer-events: none;
 }
 
