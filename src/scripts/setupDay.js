@@ -1,4 +1,3 @@
-
 function setupDay(container) {
     // Load day images
     importSVG('images/mgj-03.svg', '#day-2', function(f) {

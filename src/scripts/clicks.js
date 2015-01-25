@@ -12,8 +12,10 @@ function clickHandler(id){
                     bubble(obj.locked);
                 }
             } else {
-                bubble(obj.success);
-                obj.fulfilled = true;
+                if(!obj.fulfilled) {
+                    bubble(obj.success);
+                    obj.fulfilled = true;
+                }
             }
         }
     }
