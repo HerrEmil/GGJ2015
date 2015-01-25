@@ -1,34 +1,3 @@
-function clickHandler(id){
-    console.log(id);
-    for(var key in story){
-        var obj = story[key];
-        if(obj.id === id) {
-            console.log(story[key]);
-            if(obj.premise){
-                if(story[obj.premise].fulfilled) {
-                    alert(obj.success);
-                    obj.fulfilled = true;
-                } else {
-                    alert(obj.locked);
-                }
-            } else {
-                if(!obj.fulfilled){
-                    alert(obj.success);
-                    obj.fulfilled = true;
-                }
-            }
-        }
-    }
-}
-
-function handleClicks(f, ids) {
-    ids.forEach(function(id){
-        var querySelector = '#' + id;
-        f.select( querySelector ).click(function() {
-            clickHandler(id);
-        });
-    });
-}
 function setupDay(container) {
     // Load day images
     importSVG('images/mgj-03.svg', '#day-2', function(f) {
