@@ -7,12 +7,12 @@ var story = {
         id:      'dead_x5F_tree_3_',
         premise: 'clicking tent',
         locked:  'It´s a tree.',
-        success: ' - Hmm… A branch from that dead tree could be used as a deadly club.',
+        success: ' - Hmm… A branch from that dead tree could be used as a deadly club. - Let’s go hit the snake with this heavy branch!',
     },
     'sleeping in tent': {
         id:      'tent',
         premise: 'getting a club',
-        locked:  '- Oh no! There is a snake in front of the tent!',
+        locked:  '- Oh no! There is a snake in front of the tent! - We need to get rid of the snake.',
         success: ' - Hah! The snake is no more!  - It is time to go to sleep.'
     },
     'getting matches': {
@@ -31,5 +31,9 @@ var story = {
         premise: 'making a torch',
         locked:  ' - We need something to scare away the wolf!',
         success: ' - Excellent! The wolf is afraid of the fire! - Now we can finally get some rest!'
+    },
+    'EXTRA TEXT meeting the wolf': {
+        id:      'wolf_1_',
+        success: ' - There is a scary wolf here! - Let’s go back!',
     }
 };
