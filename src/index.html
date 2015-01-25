@@ -5,9 +5,12 @@
     </head>
 
     <body>
+    </div>
         <button onclick="switchLayer('down')">Down</button>
         <button onclick="switchLayer('up')">Up</button>
         <button onclick="switchScene('night')">Night</button>
+
+    <div class="bubble" id="intro" style="z-index: 100;background-image: url(pratbubblar/mgj_pratbubblar-00.svg)" onclick="dismissIntro()"></div>
 
     <div class="full" id="day">
         <div class="layer layer--fixed" style="background-image: url(images/mgj-02.svg)" id="day-1"></div>
@@ -39,6 +42,11 @@
     <script src="scripts/setupNight.js"></script>
     <script src="scripts/scripts.js"></script>
     <script>
+
+function dismissIntro () {
+    document.getElementById('intro').setAttribute('style','display:none;');
+    bubble(['01','02','03','04']);
+}
 
     setupNight(document.querySelector('#night'));
     setupDay(document.querySelector('#day'));
