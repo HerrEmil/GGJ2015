@@ -38,6 +38,6 @@ var story = {
     },
     'EXTRA TEXT cannot sleep': {
         id:      'tent_2_',
-        success: ' - We cannot sleep before the wolf stops howling!'
+        success: 28
     }
 };
