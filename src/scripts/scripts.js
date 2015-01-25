@@ -1,45 +1,6 @@
-var currentScene = 'crashSiteDay',
+var currentScene = 'day',
     currentLayer = 5,
     dayOrNight = 'night';
-
-function makeSceneMovable(container, layers) {
-    var startX;
-    var currentPosition = 0;
-
-    function drag (e) {
-        var diffX = (e.layerX - startX);
-        var factors = [0.25, 0.5, 1];
-        for(var i=0; i<3; i++){
-            layers[i].style.left = diffX * factors[i] + 'px';
-            currentPosition = diffX;
-        }
-    }
-
-    function mouseUp() {
-        container.removeEventListener(normalizedEvents.move, drag);
-    }
-
-    function mouseDown(e){
-        startX = e.layerX - currentPosition;
-        container.addEventListener(normalizedEvents.move, drag);
-        container.addEventListener(normalizedEvents.up, mouseUp)
-    };
-
-    function removeAllEventListeners() {
-        container.removeEventListener(normalizedEvents.down, mouseDown);
-        container.removeEventListener(normalizedEvents.move, drag);
-        container.removeEventListener(normalizedEvents.up, mouseUp);
-    }
-
-    container.addEventListener(normalizedEvents.down, mouseDown);
-
-    // Start positions
-    for(var i=0; i<3; i++){
-        layers[i].style.left = '0px';
-        layers[i].style.backgroundPosition = '0px';
-    }    
-}
-
 
 function switchScene(sceneID) {
     // Hide the old scene
@@ -104,13 +65,6 @@ function switchLayer(direction) {
         currentLayer += 1;
     } else { return console.log("You can't move " + direction + ", you've reached the edge."); }
 
-    // console.log('currentBackground ' + currentBackground);
-    // console.log('currentMiddleground ' + currentMiddleground);
-    // console.log('currentForeground ' + currentForeground);
-    // console.log('newBackground ' + newBackground);
-    // console.log('newMiddleground ' + newMiddleground);
-    // console.log('newForeground ' + newForeground);
-
     // update normal, half and twice classes
     document.getElementById(currentBackground).classList.remove('layer--half');
     document.getElementById(currentMiddleground).classList.remove('layer--normal');
@@ -120,8 +74,7 @@ function switchLayer(direction) {
     document.getElementById(newForeground).classList.add('layer--twice');
 
     // Update moveable layers to currently displayed ones
-    if (dayOrNight === 'day') {container = document.querySelector('#crashSiteDay');};
-    if (dayOrNight === 'night') {container = document.querySelector('#crashSiteNight');};
+    container = document.getElementById(dayOrNight);
     var layers = [
         document.getElementById(newBackground),
         document.getElementById(newMiddleground),

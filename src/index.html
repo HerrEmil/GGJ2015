@@ -6,7 +6,7 @@
 
     <body>
 
-    <div class="full" id="crashSiteDay">
+    <div class="full" id="day">
         <div class="layer layer--fixed" style="background-image: url(images/mgj-02.svg)" id="day-1"></div>
         <div class="layer hidden" id="day-2"></div>
         <div class="layer hidden" id="day-3"></div>
@@ -15,7 +15,7 @@
         <div class="layer layer--twice" id="day-6"></div>
     </div>
 
-    <div class="full hidden" id="crashSiteNight">
+    <div class="full hidden" id="night">
         <div class="layer layer--fixed" style="background-image: url(images/mgj-09.svg)" id="night-1"></div>
         <div class="layer hidden" id="night-2"></div>
         <div class="layer hidden" id="night-3"></div>
@@ -28,15 +28,16 @@
     <script src="scripts/sound.js"></script>
     <script src="scripts/normalizedEvents.js"></script>
     <script src="scripts/importSVG.js"></script>
+    <script src="scripts/makeSceneMovable.js"></script>
     <script src="scripts/setupDay.js"></script>
     <script src="scripts/setupNight.js"></script>
     <script src="scripts/scripts.js"></script>
     <script>
 
-    setupNight(document.querySelector('#crashSiteNight'));
-    setupDay(document.querySelector('#crashSiteDay'));
+    setupNight(document.querySelector('#night'));
+    setupDay(document.querySelector('#day'));
     // Start the first scene
-    switchScene('crashSiteDay');
+    switchScene('day');
     var music = new Audio('Intro1');
     var ambience = new Audio('amb/104320__proxima4__desert-simple');
     music.play();
