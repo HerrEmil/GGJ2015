@@ -7,7 +7,7 @@ function setupNight(container) {
         handleClicks(f, ['dead_x5F_tree_2_', 'well_5_', 'wolf_2_']);
     });
     importSVG('images/mgj-12.svg', '#night-4', function(f) {
-        handleClicks(f, ['peter_13_', 'peter_10_', 'dead_x5F_tree_4_']);
+        handleClicks(f, ['peter_13_', 'peter_10_', 'dead_x5F_tree_4_', 'bag']);
     });
     importSVG('images/mgj-13.svg', '#night-5', function(f) {
         handleClicks(f, ['tent_2_', 'peter_11_']);
