@@ -13,13 +13,13 @@ function switchScene(sceneID) {
 
 // up or down
 function switchLayer(direction) {
-    var newBackground = dayOrNight + '-',
-        newMiddleground = dayOrNight + '-',
-        newForeground = dayOrNight + '-',
-        currentBackground = dayOrNight + '-' + (currentLayer - 1),
-        currentMiddleground = dayOrNight + '-' + currentLayer,
-        currentForeground = dayOrNight + '-' + (currentLayer + 1),
-        container;
+    var scenePrefix = dayOrNight + '-';
+    var newBackground =   scenePrefix,
+        newMiddleground = scenePrefix,
+        newForeground =   scenePrefix,
+        currentBackground =   scenePrefix + (currentLayer - 1),
+        currentMiddleground = scenePrefix + currentLayer,
+        currentForeground =   scenePrefix + (currentLayer + 1);
 
     // If you're going up, and you're not already in the top layer
     if (direction === 'up' && currentLayer > 3) {
@@ -65,12 +65,10 @@ function switchLayer(direction) {
     document.getElementById(newMiddleground).classList.add('layer--normal');
     document.getElementById(newForeground).classList.add('layer--twice');
 
-    // Update moveable layers to currently displayed ones
-    container = document.getElementById(dayOrNight);
     var layers = [
         document.getElementById(newBackground),
         document.getElementById(newMiddleground),
         document.getElementById(newForeground)
     ];
-    makeSceneMovable(container, layers);
+    makeSceneMovable(document.getElementById(dayOrNight), layers);
 }
