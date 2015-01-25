@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 17.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1600px"
+	 height="900px" viewBox="0 0 1600 900" enable-background="new 0 0 1600 900" xml:space="preserve">
+<g id="Layer_6" display="none">
+</g>
+<g id="measurement_x5F_tools">
+	<polygon fill="#1D252B" points="1117.876,581.975 753.208,569.375 737.699,761.773 920.999,675.572 	"/>
+	<polygon fill="#1D252B" points="617.174,259.506 617.174,139.974 430.476,280.823 541.456,297.974 	"/>
+	<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="801.7811" y1="584.2427" x2="981.1327" y2="867.2401">
+		<stop  offset="0" style="stop-color:#2A3B44"/>
+		<stop  offset="0.3493" style="stop-color:#30424C"/>
+		<stop  offset="0.7191" style="stop-color:#394E5B"/>
+		<stop  offset="0.7604" style="stop-color:#394E5B"/>
+		<stop  offset="1" style="stop-color:#394E5B"/>
+	</linearGradient>
+	<polygon fill="url(#SVGID_1_)" points="753.208,569.375 1063.841,719.1 737.699,761.773 	"/>
+	<linearGradient id="SVGID_3_" gradientUnits="userSpaceOnUse" x1="458.0126" y1="243.1786" x2="1142.4844" y2="500.0288">
+		<stop  offset="0" style="stop-color:#3F5C63"/>
+		<stop  offset="0.5773" style="stop-color:#3E5A61"/>
+		<stop  offset="0.8507" style="stop-color:#3A5459"/>
+		<stop  offset="1" style="stop-color:#364D51"/>
+	</linearGradient>
+	<polygon fill="url(#SVGID_3_)" points="430.476,280.823 1143.586,199.401 1117.876,581.975 501.911,560.693 	"/>
+	<rect x="617.174" y="353.128" fill="none" width="546.392" height="312.446"/>
+	<text transform="matrix(1 0 0 1 617.1724 397.8818)"><tspan x="0" y="0" fill="#82B3BF" font-family="'HoltwoodOneSC'" font-size="65" letter-spacing="1">Let’s go </tspan><tspan x="0" y="65" fill="#82B3BF" font-family="'HoltwoodOneSC'" font-size="65" letter-spacing="1">back!</tspan></text>
+</g>
+</svg>
