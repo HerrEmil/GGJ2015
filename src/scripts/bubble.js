@@ -10,7 +10,7 @@ function bubbleOnce(id){
     console.log(url);
     var el = document.createElement('div');
     el.className = 'bubble';
-    el.setAttribute('style', 'background-image: url('+url+')');;
+    el.setAttribute('style', 'z-index: '+(100-id)+';background-image: url('+url+')');;
     el.addEventListener('click', function(){
         el.style.display = 'none';
     });
