@@ -8,6 +8,10 @@ function axesMove(panCallback) {
 function dPadMove(panCallback) {
     var controller;
     for(var key in controllers) {
+        // Firefox left and right
+        if (controllers[key].buttons[7].pressed) panCallback(3);
+        if (controllers[key].buttons[5].pressed) panCallback(-3);
+        // Chrome left and right
         if (controllers[key].buttons[14].pressed) panCallback(3);
         if (controllers[key].buttons[15].pressed) panCallback(-3);
     }
