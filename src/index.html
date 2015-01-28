@@ -7,10 +7,8 @@
 
     <body>
 
-        <button style="z-index:1000; position:absolute;" onclick="switchLayer('down')">Down</button>
-        <button style="z-index:1000; position:absolute; left: 50px" onclick="switchLayer('up')">Up</button>
-
     <div class="bubble" id="intro" style="z-index: 100;background-image: url(bubbles/bubble-00.svg)" onclick="dismissIntro()"></div>
+    <div class="hint" id="hint">Drag to look around. Arrows to move in and out.</div>
 
     <div class="full" id="day">
         <div class="layer layer--fixed" style="background-image: url(images/mgj-02.svg)" id="day-1"></div>
@@ -19,6 +17,8 @@
         <div class="layer layer--half" id="day-4"></div>
         <div class="layer layer--normal" id="day-5"></div>
         <div class="layer layer--twice" id="day-6"></div>
+        <div class="nav-arrow nav-arrow--up" onclick="switchLayer('up')"></div>
+        <div class="nav-arrow nav-arrow--down" onclick="switchLayer('down')"></div>
     </div>
 
     <div class="full hidden" id="night">
@@ -28,6 +28,8 @@
         <div class="layer layer--half" id="night-4"></div>
         <div class="layer layer--normal" id="night-5"></div>
         <div class="layer layer--twice" id="night-6"></div>
+        <div class="nav-arrow nav-arrow--up" onclick="switchLayer('up')"></div>
+        <div class="nav-arrow nav-arrow--down" onclick="switchLayer('down')"></div>
     </div>
 
     <script src="bower_components/snap.svg/dist/snap.svg-min.js"></script>
@@ -47,10 +49,14 @@
 function dismissIntro () {
     document.getElementById('intro').setAttribute('style','display:none;');
     bubble(['01','02','03','04']);
+    var hint = document.getElementById('hint');
+    hint.style.display = 'block';
+    setTimeout(function(){ hint.style.opacity = '0'; }, 4000);
+    setTimeout(function(){ hint.style.display = 'none'; }, 5000);
     var music = new Audio('Intro1');
     var ambience = new Audio('amb/104320__proxima4__desert-simple');
     music.play();
-    ambience.play();    
+    ambience.play();
 }
 
     setupNight(document.querySelector('#night'));
