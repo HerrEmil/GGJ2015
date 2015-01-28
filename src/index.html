@@ -46,6 +46,10 @@
 function dismissIntro () {
     document.getElementById('intro').setAttribute('style','display:none;');
     bubble(['01','02','03','04']);
+    var music = new Audio('Intro1');
+    var ambience = new Audio('amb/104320__proxima4__desert-simple');
+    music.play();
+    ambience.play();    
 }
 
     setupNight(document.querySelector('#night'));
@@ -53,10 +57,6 @@ function dismissIntro () {
 
     // Start the first scene
     switchScene('day');
-    var music = new Audio('Intro1');
-    var ambience = new Audio('amb/104320__proxima4__desert-simple');
-    music.play();
-    ambience.play();
     </script>
     </body>
 </html>
