@@ -1,11 +1,23 @@
-function makeSceneArrowable(panCallback) {
-    setInterval(isKeyPressed, 16);
-    function isKeyPressed() {
-        keys.forEach(function(key){
-            if(key.isPressed() === 37) panCallback(3);
-            if(key.isPressed() === 39) panCallback(-3);
-        });
+function axesMove(panCallback) {
+    for(var key in controllers) {
+        var axes = controllers[key].axes;
+        if(axes[0] > 0.05 || axes[0] < -0.05) panCallback(axes[0] * -5);
     }
+}
+
+function dPadMove(panCallback) {
+    var controller;
+    for(var key in controllers) {
+        if (controllers[key].buttons[14].pressed) panCallback(3);
+        if (controllers[key].buttons[15].pressed) panCallback(-3);
+    }
+}
+
+function checkArrowKeys(panCallback) {
+    keys.forEach(function(key){
+        if(key.isPressed() === 37) panCallback(3);
+        if(key.isPressed() === 39) panCallback(-3);
+    });
 }
 
 function onMouseDrag(callback) {
@@ -41,7 +53,14 @@ function makeSceneMovable(container, layers) {
         }
     }
     onMouseDrag(drag);
-    makeSceneArrowable(drag);
+
+    function checkEvents(){
+        checkArrowKeys(drag);
+        axesMove(drag);
+        dPadMove(drag);        
+    }
+    setInterval(checkEvents, 16);
+
 
     // Start positions
     for(var i=0; i<3; i++){
