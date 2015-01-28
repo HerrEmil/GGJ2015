@@ -32,31 +32,33 @@ function onMouseDrag(callback) {
 
 let _sceneState = null;
 
+function applyPosition(container, layers, factors, ratio) {
+  const w = container.offsetWidth;
+  for (let i = 0; i < 3; i++) {
+    layers[i].style.left = `${ratio * w * factors[i]}px`;
+  }
+}
+
 function makeSceneMovable(container, layers) {
   const factors = [0.5, 1, 2];
 
   if (!_sceneState) {
-    // First call: initialize position and set up input handlers once
-    _sceneState = { currentPosition: -800, layers };
-
-    const MIN_POS = -1600;
-    const MAX_POS = 0;
+    // Position stored as ratio of container width (-2 to 0), resize-independent
+    _sceneState = { positionRatio: -1, layers, container };
 
     function drag(diffX) {
-      _sceneState.currentPosition = Math.max(MIN_POS, Math.min(MAX_POS, _sceneState.currentPosition + diffX));
-      for (let i = 0; i < 3; i++) {
-        _sceneState.layers[i].style.left = `${_sceneState.currentPosition * factors[i]}px`;
-      }
+      const w = container.offsetWidth;
+      _sceneState.positionRatio = Math.max(-2, Math.min(0, _sceneState.positionRatio + diffX / w));
+      applyPosition(container, _sceneState.layers, factors, _sceneState.positionRatio);
     }
     onMouseDrag(drag);
     enableArrowKeyPanning(drag);
+    window.addEventListener('resize', function() {
+      applyPosition(container, _sceneState.layers, factors, _sceneState.positionRatio);
+    });
   } else {
-    // Subsequent calls: just update target layers, keep position
     _sceneState.layers = layers;
   }
 
-  // Apply current position to new layers
-  for (let i = 0; i < 3; i++) {
-    layers[i].style.left = `${_sceneState.currentPosition * factors[i]}px`;
-  }
+  applyPosition(container, layers, factors, _sceneState.positionRatio);
 }
