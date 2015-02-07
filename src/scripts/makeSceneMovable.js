@@ -21,7 +21,6 @@ function onMouseDrag(callback) {
     }
     function drag (e) {
         var diffX = (e.layerX - startX);
-        console.log(diffX);
         startX = e.layerX;
         callback(diffX, e);
     }
