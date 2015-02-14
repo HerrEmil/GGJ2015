@@ -12,7 +12,13 @@ function onMouseDrag(callback) {
     var body = document.body, startX;
     body.addEventListener(normalizedEvents.down, mouseDown);
     function mouseDown(e){
-        startX = e.layerX;
+        startX = e.screenX;
+        // ['layerX','screenX','pageX','offsetX'].forEach(function (attr) {
+        //     console.log(attr, e[attr]);
+        // });
+
+        e.stopPropagation();
+        e.cancelBubble = true;
         body.addEventListener(normalizedEvents.move, drag);
         body.addEventListener(normalizedEvents.up, mouseUp);
     };
@@ -20,9 +26,9 @@ function onMouseDrag(callback) {
         body.removeEventListener(normalizedEvents.move, drag);
     }
     function drag (e) {
-        var diffX = (e.layerX - startX);
+        var diffX = (e.screenX - startX);
         console.log(diffX);
-        startX = e.layerX;
+        startX = e.screenX;
         callback(diffX, e);
     }
 }
