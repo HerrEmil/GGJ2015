@@ -1,44 +1,44 @@
 function keyStatus(keyCode) {
-  var _pressed = false;
+  let _pressed = false;
   return {
-    keyCode: keyCode,
-    down: function() {
+    keyCode,
+    down() {
       _pressed = true;
     },
-    up: function() {
+    up() {
       _pressed = false;
     },
-    isPressed: function() {
+    isPressed() {
       return _pressed ? keyCode : 0;
-    }
-  }
+    },
+  };
 }
-var keys = [
+const keys = [
   37, //left
   38, //up
   39, //right
   40, //down
   32, //space
   13, //enter
-  27  //escape
+  27, //escape
 ].map(keyStatus);
 
-document.addEventListener('keydown', function(e){
-  keys.forEach(function(key){
-    if(key.keyCode === e.keyCode) {
+document.addEventListener("keydown", ({ keyCode }) => {
+  keys.forEach((key) => {
+    if (key.keyCode === keyCode) {
       key.down();
     }
   });
 });
-document.addEventListener('keyup', function(e){
-  keys.forEach(function(key){
-    if(key.keyCode === e.keyCode) {
+document.addEventListener("keyup", ({ keyCode }) => {
+  keys.forEach((key) => {
+    if (key.keyCode === keyCode) {
       key.up();
     }
   });
 });
 
-document.addEventListener('keyup', function(e){
-  if(e.keyCode === 38) switchLayer('up');
-  if(e.keyCode === 40) switchLayer('down');
+document.addEventListener("keyup", ({ keyCode }) => {
+  if (keyCode === 38) switchLayer("up");
+  if (keyCode === 40) switchLayer("down");
 });
