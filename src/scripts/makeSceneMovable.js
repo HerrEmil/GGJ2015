@@ -16,11 +16,12 @@ function onMouseDrag(callback) {
     startX = e.screenX;
     e.stopPropagation();
     e.cancelBubble = true;
-    body.addEventListener(normalizedEvents.move, drag);
-    body.addEventListener(normalizedEvents.up, mouseUp);
+    window.addEventListener(normalizedEvents.move, drag);
+    window.addEventListener(normalizedEvents.up, mouseUp);
   }
   function mouseUp() {
-    body.removeEventListener(normalizedEvents.move, drag);
+    window.removeEventListener(normalizedEvents.move, drag);
+    window.removeEventListener(normalizedEvents.up, mouseUp);
   }
   function drag(e) {
     const diffX = e.screenX - startX;
