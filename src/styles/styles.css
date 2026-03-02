@@ -43,6 +43,7 @@ body{
 .layer.hidden {
     visibility: visible;
     opacity: 0;
+    pointer-events: none;
 }
 .layer:not(.hidden) {
     opacity: 1;

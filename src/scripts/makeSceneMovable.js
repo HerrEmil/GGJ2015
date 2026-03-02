@@ -39,8 +39,11 @@ function makeSceneMovable(container, layers) {
     // First call: initialize position and set up input handlers once
     _sceneState = { currentPosition: -800, layers };
 
+    const MIN_POS = -1600;
+    const MAX_POS = 0;
+
     function drag(diffX) {
-      _sceneState.currentPosition += diffX;
+      _sceneState.currentPosition = Math.max(MIN_POS, Math.min(MAX_POS, _sceneState.currentPosition + diffX));
       for (let i = 0; i < 3; i++) {
         _sceneState.layers[i].style.left = `${_sceneState.currentPosition * factors[i]}px`;
       }
