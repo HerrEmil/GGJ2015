@@ -27,17 +27,15 @@ function switchLayer(direction) {
   const currentMiddleGround = scenePrefix + currentLayer;
   const currentForeground = scenePrefix + (currentLayer + 1);
 
+  let enteringLayer, leavingLayer;
+
   // If you're going up, and you're not already in the top layer
   if (direction === "up" && currentLayer > 3) {
     newBackground += currentLayer - 2;
     newMiddleGround = currentBackground;
     newForeground = currentMiddleGround;
-
-    // display the new background
-    document.getElementById(newBackground).classList.remove("hidden");
-
-    // hide old foreground
-    document.getElementById(currentForeground).classList.add("hidden");
+    enteringLayer = newBackground;
+    leavingLayer = currentForeground;
 
     // Update current layer
     currentLayer -= 1;
@@ -45,12 +43,8 @@ function switchLayer(direction) {
     newBackground = currentMiddleGround;
     newMiddleGround = currentForeground;
     newForeground += currentLayer + 2;
-
-    // display the new foreground
-    document.getElementById(newForeground).classList.remove("hidden");
-
-    // hide old background
-    document.getElementById(currentBackground).classList.add("hidden");
+    enteringLayer = newForeground;
+    leavingLayer = currentBackground;
 
     // Update current layer
     currentLayer += 1;
@@ -58,15 +52,33 @@ function switchLayer(direction) {
     return;
   }
 
-  // update normal, half and twice classes
-  document.getElementById(currentBackground).classList.remove("layer--half");
-  document
-    .getElementById(currentMiddleGround)
-    .classList.remove("layer--normal");
-  document.getElementById(currentForeground).classList.remove("layer--twice");
+  // Remove old type classes only from layers that stay visible (not the leaving one)
+  if (currentBackground !== leavingLayer)
+    document.getElementById(currentBackground).classList.remove("layer--half");
+  if (currentMiddleGround !== leavingLayer)
+    document.getElementById(currentMiddleGround).classList.remove("layer--normal");
+  if (currentForeground !== leavingLayer)
+    document.getElementById(currentForeground).classList.remove("layer--twice");
+
+  // Assign new classes to visible layers
   document.getElementById(newBackground).classList.add("layer--half");
   document.getElementById(newMiddleGround).classList.add("layer--normal");
   document.getElementById(newForeground).classList.add("layer--twice");
+
+  // Show entering layer instantly (no transition) to avoid flash at wrong scale
+  const enterEl = document.getElementById(enteringLayer);
+  enterEl.style.transition = "none";
+  enterEl.classList.remove("hidden");
+  enterEl.offsetHeight; // force repaint with transition disabled
+  enterEl.style.transition = "";
+
+  // Fade out the leaving layer (keep its old type class so it doesn't flash at scale 1)
+  const leaveEl = document.getElementById(leavingLayer);
+  leaveEl.classList.add("hidden");
+  leaveEl.addEventListener("transitionend", function cleanup() {
+    leaveEl.removeEventListener("transitionend", cleanup);
+    leaveEl.classList.remove("layer--half", "layer--normal", "layer--twice");
+  });
 
   const layers = [
     document.getElementById(newBackground),
