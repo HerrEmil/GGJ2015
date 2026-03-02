@@ -30,11 +30,11 @@ function onMouseDrag(callback) {
 }
 
 function makeSceneMovable(container, layers) {
-  let currentPosition = 0;
+  const factors = [0.5, 1, 2];
+  let currentPosition = -800;
 
   function drag(diffX) {
     currentPosition += diffX;
-    const factors = [0.5, 1, 2];
     for (let i = 0; i < 3; i++) {
       layers[i].style.left = `${currentPosition * factors[i]}px`;
     }
@@ -44,6 +44,6 @@ function makeSceneMovable(container, layers) {
 
   // Start positions
   for (let i = 0; i < 3; i++) {
-    layers[i].style.left = "0px";
+    layers[i].style.left = `${currentPosition * factors[i]}px`;
   }
 }
