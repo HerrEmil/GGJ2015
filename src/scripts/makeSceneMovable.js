@@ -29,21 +29,30 @@ function onMouseDrag(callback) {
   }
 }
 
+let _sceneState = null;
+
 function makeSceneMovable(container, layers) {
   const factors = [0.5, 1, 2];
-  let currentPosition = -800;
 
-  function drag(diffX) {
-    currentPosition += diffX;
-    for (let i = 0; i < 3; i++) {
-      layers[i].style.left = `${currentPosition * factors[i]}px`;
+  if (!_sceneState) {
+    // First call: initialize position and set up input handlers once
+    _sceneState = { currentPosition: -800, layers };
+
+    function drag(diffX) {
+      _sceneState.currentPosition += diffX;
+      for (let i = 0; i < 3; i++) {
+        _sceneState.layers[i].style.left = `${_sceneState.currentPosition * factors[i]}px`;
+      }
     }
+    onMouseDrag(drag);
+    enableArrowKeyPanning(drag);
+  } else {
+    // Subsequent calls: just update target layers, keep position
+    _sceneState.layers = layers;
   }
-  onMouseDrag(drag);
-  enableArrowKeyPanning(drag);
 
-  // Start positions
+  // Apply current position to new layers
   for (let i = 0; i < 3; i++) {
-    layers[i].style.left = `${currentPosition * factors[i]}px`;
+    layers[i].style.left = `${_sceneState.currentPosition * factors[i]}px`;
   }
 }
