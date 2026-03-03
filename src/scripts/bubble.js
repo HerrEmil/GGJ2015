@@ -13,8 +13,12 @@ function bubbleOnce(id) {
     "style",
     `z-index: ${100 - id};background-image: url(${url})`
   );
+  document.body.classList.add("has-bubble");
   el.addEventListener("click", () => {
     el.style.display = "none";
+    if (!Array.from(document.querySelectorAll(".bubble")).some(b => b.style.display !== "none")) {
+      document.body.classList.remove("has-bubble");
+    }
   });
   document.body.appendChild(el);
 }
