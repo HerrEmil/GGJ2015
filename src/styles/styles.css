@@ -81,6 +81,10 @@ body{
 .nav-arrow:hover {
     opacity: 1;
 }
+body.has-bubble .nav-arrow {
+    opacity: 0;
+    pointer-events: none;
+}
 .nav-arrow::before,
 .nav-arrow::after {
     content: '';
