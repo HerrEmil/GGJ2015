@@ -1,4 +1,9 @@
-function bubble(id) {
+let onAllBubblesDismissed = null;
+
+function bubble(id, onComplete) {
+  if (onComplete) {
+    onAllBubblesDismissed = onComplete;
+  }
   if (id instanceof Array) {
     id.forEach(bubbleOnce);
   } else {
@@ -18,6 +23,11 @@ function bubbleOnce(id) {
     el.style.display = "none";
     if (!Array.from(document.querySelectorAll(".bubble")).some(b => b.style.display !== "none")) {
       document.body.classList.remove("has-bubble");
+      if (onAllBubblesDismissed) {
+        const cb = onAllBubblesDismissed;
+        onAllBubblesDismissed = null;
+        cb();
+      }
     }
   });
   document.body.appendChild(el);

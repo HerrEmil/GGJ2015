@@ -8,11 +8,12 @@ function clickHandler(id) {
       }
       if (obj.premise) {
         if (story[obj.premise].fulfilled) {
-          bubble(obj.success);
-          obj.fulfilled = true;
           if (key === "sleeping in tent") {
-            switchScene("night");
+            bubble(obj.success, () => switchScene("night"));
+          } else {
+            bubble(obj.success);
           }
+          obj.fulfilled = true;
         } else {
           bubble(obj.locked);
         }
