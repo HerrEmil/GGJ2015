@@ -23,3 +23,6 @@ jobs:
 
       - name: Deploy static site to S3 bucket
         run: aws s3 sync ./src/ s3://herremil.com/sandgrains --delete
+
+      - name: Invalidate CloudFront cache
+        run: aws cloudfront create-invalidation --distribution-id E24F2DBYSW79ZP --paths "/sandgrains/*"
