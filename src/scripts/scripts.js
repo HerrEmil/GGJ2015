@@ -61,29 +61,29 @@ function switchLayer(direction) {
     document.getElementById(currentForeground).classList.remove("layer--twice");
 
   // Assign new classes to visible layers
-  document.getElementById(newBackground).classList.add("layer--half");
-  document.getElementById(newMiddleGround).classList.add("layer--normal");
-  document.getElementById(newForeground).classList.add("layer--twice");
-
-  // Show entering layer instantly (no transition) to avoid flash at wrong scale
-  const enterEl = document.getElementById(enteringLayer);
-  enterEl.style.transition = "none";
-  enterEl.classList.remove("hidden");
-  enterEl.offsetHeight; // force repaint with transition disabled
-  enterEl.style.transition = "";
-
-  // Fade out the leaving layer (keep its old type class so it doesn't flash at scale 1)
-  const leaveEl = document.getElementById(leavingLayer);
-  leaveEl.classList.add("hidden");
-  leaveEl.addEventListener("transitionend", function cleanup() {
-    leaveEl.removeEventListener("transitionend", cleanup);
-    leaveEl.classList.remove("layer--half", "layer--normal", "layer--twice");
-  });
-
   const layers = [
     document.getElementById(newBackground),
     document.getElementById(newMiddleGround),
     document.getElementById(newForeground),
   ];
+  layers[0].classList.add("layer--half");
+  layers[1].classList.add("layer--normal");
+  layers[2].classList.add("layer--twice");
+
+  // Show entering layer instantly (no transition) to avoid flash at wrong scale
+  const enterEl = document.getElementById(enteringLayer);
+  enterEl.style.transition = "none";
+  enterEl.classList.remove("layer--faded");
+  enterEl.offsetHeight; // force repaint with transition disabled
+  enterEl.style.transition = "";
+
+  // Fade out the leaving layer (keep its old type class so it doesn't flash at scale 1)
+  const leaveEl = document.getElementById(leavingLayer);
+  leaveEl.classList.add("layer--faded");
+  leaveEl.addEventListener("transitionend", function cleanup() {
+    leaveEl.removeEventListener("transitionend", cleanup);
+    leaveEl.classList.remove("layer--half", "layer--normal", "layer--twice");
+  });
+
   makeSceneMovable(document.getElementById(dayOrNight), layers);
 }

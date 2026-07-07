@@ -28,7 +28,6 @@ body{
 }
 .layer--fixed {
     pointer-events: none;
-    bottom: 0;
 }
 .layer--half {
     pointer-events: none;
@@ -48,13 +47,9 @@ body{
 .hidden {
     visibility: hidden;
 }
-.layer.hidden {
-    visibility: visible;
+.layer--faded {
     opacity: 0;
     pointer-events: none;
-}
-.layer:not(.hidden) {
-    opacity: 1;
 }
 
 .bubble {

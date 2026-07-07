@@ -15,6 +15,7 @@ const story = {
     premise: "getting a club",
     locked: "06",
     success: "08",
+    nextScene: "night",
   },
   "getting matches": {
     id: "bag",

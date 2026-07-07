@@ -1,16 +1,17 @@
-let onAllBubblesDismissed = null;
-
 function bubble(id, onComplete) {
-  if (onComplete) {
-    onAllBubblesDismissed = onComplete;
-  }
-  if (id instanceof Array) {
-    id.forEach(bubbleOnce);
-  } else {
-    bubbleOnce(id);
-  }
+  const ids = id instanceof Array ? id : [id];
+  let remaining = ids.length;
+  document.body.classList.add("has-bubble");
+  ids.forEach((bubbleId) =>
+    bubbleOnce(bubbleId, () => {
+      remaining -= 1;
+      if (remaining === 0 && onComplete) {
+        onComplete();
+      }
+    })
+  );
 }
-function bubbleOnce(id) {
+function bubbleOnce(id, onDismissed) {
   const url = `bubbles/bubble-${id}.svg`;
   const el = document.createElement("div");
   el.className = "bubble";
@@ -18,17 +19,12 @@ function bubbleOnce(id) {
     "style",
     `z-index: ${100 - id};background-image: url(${url})`
   );
-  document.body.classList.add("has-bubble");
   el.addEventListener("click", () => {
     el.style.display = "none";
     if (!Array.from(document.querySelectorAll(".bubble")).some(b => b.style.display !== "none")) {
       document.body.classList.remove("has-bubble");
-      if (onAllBubblesDismissed) {
-        const cb = onAllBubblesDismissed;
-        onAllBubblesDismissed = null;
-        cb();
-      }
     }
+    onDismissed();
   });
   document.body.appendChild(el);
 }

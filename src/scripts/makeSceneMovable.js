@@ -31,34 +31,36 @@ function onMouseDrag(callback) {
 }
 
 let _sceneState = null;
+const layerFactors = [0.5, 1, 2];
 
-function applyPosition(container, layers, factors, ratio) {
-  const w = container.offsetWidth;
+function applyPosition() {
+  const { layers, width, positionRatio } = _sceneState;
   for (let i = 0; i < 3; i++) {
-    layers[i].style.left = `${ratio * w * factors[i]}px`;
+    layers[i].style.left = `${positionRatio * width * layerFactors[i]}px`;
   }
 }
 
 function makeSceneMovable(container, layers) {
-  const factors = [0.5, 1, 2];
-
   if (!_sceneState) {
     // Position stored as ratio of container width (-2 to 0), resize-independent
-    _sceneState = { positionRatio: -1, layers, container };
+    _sceneState = { positionRatio: -1, layers, container, width: container.offsetWidth };
 
     function drag(diffX) {
-      const w = container.offsetWidth;
-      _sceneState.positionRatio = Math.max(-2, Math.min(0, _sceneState.positionRatio + diffX / w));
-      applyPosition(container, _sceneState.layers, factors, _sceneState.positionRatio);
+      const state = _sceneState;
+      state.positionRatio = Math.max(-2, Math.min(0, state.positionRatio + diffX / state.width));
+      applyPosition();
     }
     onMouseDrag(drag);
     enableArrowKeyPanning(drag);
     window.addEventListener('resize', function() {
-      applyPosition(container, _sceneState.layers, factors, _sceneState.positionRatio);
+      _sceneState.width = _sceneState.container.offsetWidth;
+      applyPosition();
     });
   } else {
     _sceneState.layers = layers;
+    _sceneState.container = container;
+    _sceneState.width = container.offsetWidth;
   }
 
-  applyPosition(container, layers, factors, _sceneState.positionRatio);
+  applyPosition();
 }
