@@ -9,7 +9,7 @@ function switchScene(sceneID) {
   newScene.classList.remove("hidden");
   dayOrNight = sceneID;
   if (sceneID === "night") {
-    const amb = new Audio("amb/138288__kangarooVindaloo__desert-at-night");
+    const amb = new Audio("amb/138288__kangaroovindaloo__desert-at-night");
     const mood = new Audio("Mood1");
     amb.play();
     mood.play();

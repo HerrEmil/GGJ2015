@@ -1,3 +1,6 @@
 .DS_Store
 .playwright-mcp/
 *.png
+node_modules/
+test-results/
+playwright-report/

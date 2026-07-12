@@ -1,0 +1,13 @@
+{
+  "name": "ggj2015-sand-grains",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sand Grains — a point-n-click made for Global Game Jam 2015. Static site served from src/. package.json exists to host the Playwright playtest harness.",
+  "scripts": {
+    "test": "playwright test",
+    "test:playtest": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.61.1"
+  }
+}

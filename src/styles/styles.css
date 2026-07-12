@@ -64,6 +64,27 @@ body{
     background-repeat: no-repeat;
 }
 
+/* Text-hint bubble: story lines that are plain text (not SVG art) render here. */
+.bubble--text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+.bubble__text {
+    max-width: 60%;
+    padding: 18px 26px;
+    background: #FBE4A8;
+    color: #202a31;
+    border: 3px solid #202a31;
+    border-radius: 20px;
+    font-size: clamp(18px, 3.2vw, 34px);
+    font-weight: 600;
+    line-height: 1.25;
+    text-align: center;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+}
+
 .nav-arrow {
     position: absolute;
     right: 8px;
