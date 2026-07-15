@@ -8,6 +8,21 @@ function switchScene(sceneID) {
   oldScene.classList.add("hidden");
   newScene.classList.remove("hidden");
   dayOrNight = sceneID;
+
+  // Re-bind the drag / arrow-key pan controller to the now-visible scene. There
+  // is a single module-level _sceneState (makeSceneMovable.js); switchLayer
+  // re-calls makeSceneMovable on every layer change, but a scene switch never
+  // did — so after day->night the controller kept moving the now-hidden day
+  // layers and the night scene was un-pannable until an up/down press happened
+  // to rebind it. Query the new scene's active layers the same way
+  // setupDay/setupNight do.
+  const layers = [
+    newScene.querySelector(".layer--half"),
+    newScene.querySelector(".layer--normal"),
+    newScene.querySelector(".layer--twice"),
+  ];
+  makeSceneMovable(newScene, layers);
+
   if (sceneID === "night") {
     const amb = new Audio("amb/138288__kangaroovindaloo__desert-at-night");
     const mood = new Audio("Mood1");

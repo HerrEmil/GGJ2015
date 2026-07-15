@@ -1,7 +1,7 @@
 function Audio(key) {
   const el = document.createElement("audio");
   const srcMP3 = `<source src="snd/${key}.mp3" type='audio/mpeg; codecs="mp3"'>`;
-  const srcOGG = `<source src="snd/${key}.mp3" type='audio/ogg; codecs="vorbis"'>`;
+  const srcOGG = `<source src="snd/${key}.ogg" type='audio/ogg; codecs="vorbis"'>`;
   el.innerHTML = srcMP3 + srcOGG;
   return el;
 }
