@@ -98,3 +98,71 @@ this run. (Boot OK, no console/asset/NaN/resize issues; the 2026-07-12 fixes sti
 No lighthouserc/size/html-validate config in this repo, so the perf/lint gate remains
 N/A here; the only CI workflow is the S3 `deploy.yml` (serves `src/`, unaffected by the
 `tests/` additions).
+
+## 2026-07-16 — fix: premise-gated steps re-fire on every click (playtest sweep)
+
+**Selection:** cross-game fan-out this run (one headless subagent per game, fresh
+disjoint seeds `2026071610`–`14`) found GGJ2015 holding the **only confirmed
+fixable defect** — the premise re-fire flagged as "next GGJ2015 fix candidate" by
+the 2026-07-16 recon in 2014-7DFPS's ledger. The other four were clean: 2014-7DFPS
+(no new defect; the two known-deferred items — unbounded `triHexMeshes`, stale
+`prevTime` horizontal teleport — reconfirmed, both out of scope / vendored),
+GameLand (green across all 13 games — 0 NaN, no leaked rAF loops, best-score
+persistence intact, known fixes hold), LegendaryJourney (invariants + NaN-freedom
+hold; off-limits anyway — a concurrent burn task has its tree dirty; served its
+existing `dist/` read-only, no rebuild), Sandpiper (frozen WASM, boots clean, all
+loader+archive assets 200 exact-case — no fixable source surface). Note Sandpiper
+is nominally the "fewest regression tests / oldest ledger" pick, but it has no
+defect to fix, so the fix went to the one game that does.
+
+**Defect (MEDIUM, confirmed).** A premise-gated story step re-fired its **entire
+success set on every click** once its prerequisite was met. `clickHandler`
+(`src/scripts/clicks.js`) has two branches: the non-premise `else` guards re-fires
+with `if (!obj.fulfilled)` (`:17`), but the premise branch gated only on the
+*premise's* flag (`story[obj.premise].fulfilled`) and never on the step's **own**
+`obj.fulfilled` — it *wrote* `obj.fulfilled = true` (`:12`) but never *read* it (a
+dead write). So after the prerequisite unlocked a target, each further click
+re-ran `bubble(obj.success, …)` and re-armed the `nextScene` closure.
+Reproduced headless (seed `2026071611`):
+  * `#dead_x5F_tree_3_` ("getting a club", success `["10","11"]`): 5 post-unlock
+    clicks created bubbles `[2,2,2,2,2]` instead of `[2,0,0,0,0]` — 10 duplicate
+    success bubbles, none removed.
+  * `#tent` ("sleeping in tent", success `"08"`, `nextScene:"night"`): each
+    post-unlock click re-fired `switchScene('night')` (measured cumulative 1→2→3
+    over 3 clicks) → a repeated night transition, `makeSceneMovable` re-run, and
+    ambience (`amb/138288…desert-at-night` + `Mood1`) re-triggered.
+
+*Root-cause fix* (`src/scripts/clicks.js`): wrap the premise branch's success path
+in the symmetric `if (!obj.fulfilled)` guard, mirroring the non-premise branch
+exactly. This makes a premise-gated step fire its success set (and arm `nextScene`)
+**once**, then no-op on repeat clicks. It deliberately does **not** touch: the
+locked path (`bubble(obj.locked)` still shows while the premise is unmet — the
+deferred locked-bubble spam-stacking is untouched), bubble "show-once" semantics,
+or the unconditional per-click SFX at `clicks.js:5–8` (`new Audio(story[key].sound)`
+plays on any matching click, incl. locked ones — arguably intended click feedback,
+separate from this bug, left as-is).
+
+**Regression test:** `regression-premise-refire.spec.ts` (3 tests, all driving the
+exposed `clickHandler` / `switchScene` globals):
+1. *success set fires exactly once, no re-fire* — fulfil the premise, click the
+   dead tree once (`.bubble` count → 2), then 4 more times; assert the count stays
+   2. Proven **FAIL pre-fix** (count → 10), **PASS post-fix**.
+2. *nextScene not re-armed* — spy on the global `switchScene`, fulfil the chain,
+   click `#tent` ×3 (dismissing each success bubble to fire its onComplete);
+   assert `switchScene` invoked once. Proven **FAIL pre-fix** (`expected 1,
+   received 3`), **PASS post-fix**.
+3. *guard is not over-broad* — clicking the dead tree while the premise is unmet
+   still shows the locked text hint and fires no success art; after unlocking, the
+   first click still fires the success set (2 bubbles). Passes both pre- and
+   post-fix (characterization that the added guard only suppresses re-fires).
+
+**Gate:** `npx playwright test` → **10 passed** (7 prior + 3 new). No
+lighthouserc/size/html-validate config, so the perf/lint gate stays N/A; `.gitignore`
+already covers `node_modules/`, `test-results/`, `playwright-report/`,
+`.playwright-mcp/`. Deploy (`deploy.yml`, serves `src/`) unaffected by `tests/`.
+
+**Still-deferred (unchanged, not this run):** the bubble DOM leak +
+locked-bubble stacking (`bubble.js` only `display:none`s dismissed bubbles — a
+fuzz run this seed grew `.bubble` 6→22, `removed:0`), and the
+`currentLayer`/`dayOrNight` module-singleton non-reset. Both are semantics-changing
+and interact with the bubble regressions — a focused pass each.
