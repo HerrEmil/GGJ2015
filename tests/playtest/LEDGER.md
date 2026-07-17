@@ -339,3 +339,139 @@ keys, mobile 375×812 ↔ desktop 1280×800 resizes): `77020001`, `77021337`, `7
   passed.**
 
 Repo left exactly as found (`main` @ `0b7e86c`, clean) — all probes lived in a scratchpad.
+
+---
+
+## 2026-07-17 (run 2) — RECON ONLY (no code fix) — touch panning is NaN-poisoned
+
+**Not this run's fix target.** 2014-7DFPS won the selection (fewest regression
+specs: 2 vs this repo's 5) and was fixed/gated/pushed instead. This run touched
+**only this ledger** — no source file, no spec; all probes were throwaway specs
+inside the repo tree, deleted afterwards.
+
+**Seeds this run:** fuzz `77172001`, `77172137`, `77172333` (guarded), `77172500`,
+`77172777`, `77172999` (unguarded); scripted probe labels `77172100` (drag
+click-through), `77172200` (transition dblclick), `77172300` (reload), `77172400`
+(back/forward), `77172500b` (touch), `77172600` (arrow-spam storm), `77172700`
+(story completion). 260 real-input steps per fuzz seed. Range 77172000-77172999;
+prior runs used 7702xxxx.
+
+---
+
+### DEFECT (HIGH, confirmed, measured twice) — touch drag NaN-poisons `positionRatio`; the game is **unwinnable on any touch device**. **LEADING CANDIDATE FOR THE NEXT FIX RUN.**
+
+**Root cause.**
+* `src/scripts/normalizedEvents.js` binds `touchstart`/`touchmove`/`touchend`
+  when `"ontouchstart" in window` — i.e. on every phone and tablet.
+* `src/scripts/makeSceneMovable.js:16` (`startX = e.screenX`) and `:27-28`
+  (`diffX = e.screenX - startX; startX = e.screenX`) read `screenX` **off the
+  event object**. `TouchEvent` has no `screenX` — it lives on `e.touches[0]`. So
+  on touch, `startX` and `e.screenX` are both `undefined`.
+* `diffX = undefined - undefined = NaN` → `makeSceneMovable.js:50`
+  `positionRatio = Math.max(-2, Math.min(0, positionRatio + NaN/width))` = **NaN**
+  (the clamp does not reject NaN — `Math.min(0, NaN)` is `NaN`).
+* `applyPosition()` (`:36-41`) then writes `left: NaNpx`, which is invalid CSS and
+  **silently dropped** — the layer freezes at its last valid offset.
+
+**The poison is permanent and unrecoverable.** `positionRatio` is fed back into
+itself at `:50`, and `NaN + anything = NaN`. Arrow-key panning calls the *same*
+`drag()` (`:54`), so it cannot recover it either; mouse listeners are never bound
+in touch mode, so a mouse cannot rescue it. **No input of any kind can restore
+panning for the rest of the session.**
+
+**Measured independently, twice** (agent via CDP touch input; then re-verified
+first-hand with a `hasTouch: true, isMobile: true` 375x812 probe):
+
+| probe | value |
+| --- | --- |
+| `normalizedEvents` in a touch context | `{down: touchstart, move: touchmove, up: touchend}` |
+| `positionRatio` before | `-1` |
+| `positionRatio` after ONE touch drag | **`NaN`** |
+| layer `style.left` after | frozen at `-980px` (last valid write) |
+| `positionRatio` after arrow-key recovery attempt | **still `NaN`** |
+| pageerrors | **0** — it corrupts completely silently |
+
+**Why this is game-breaking, not cosmetic.** The **very first** `touchmove`
+produces NaN, so drag-to-explore — the core mechanic — never works on touch at
+all, not even once. Taps still fire clicks, but the tent/tree targets sit
+off-viewport at the default `positionRatio: -1` pan, so the story is
+**unreachable** on mobile. Zero console errors means nothing surfaces the failure.
+
+**Fix shape (for the next run).** Read the coordinate from the right place:
+`(e.touches && e.touches[0] ? e.touches[0] : e).screenX`, in **both** `:16` and
+`:27-28`. Guard `touchend`, whose `touches` list is **empty** (`e.touches[0]` is
+`undefined` there) — `mouseUp` currently ignores its event, so confirm the
+`touchend` path never reaches the coordinate read. Consider also making `drag()`
+reject a non-finite `diffX` defensively, so a future binding mistake degrades to
+"no pan" instead of "permanently dead pan".
+
+**Regression test design.** Run under `test.use({ hasTouch: true, isMobile: true,
+viewport: { width: 375, height: 812 } })`; assert `normalizedEvents.down ===
+"touchstart"` (proves the touch path is actually the one under test — without
+this the test silently exercises mouse and passes vacuously); dispatch a real CDP
+`Input.dispatchTouchEvent` touchStart/touchMove/touchEnd drag; assert
+`Number.isFinite(_sceneState.positionRatio)` and that the drag actually **changed**
+the pan. Fails at `NaN` pre-fix. Add a desktop control case so the mouse path is
+proven un-regressed.
+
+---
+
+### DEFECT (MEDIUM, confirmed) — a pan gesture that starts on a clickable target activates it on release
+
+The `--normal` layer moves 1:1 with the cursor (`layerFactors[1] = 1`,
+`makeSceneMovable.js:34-40`), so the element under the pointer at `mousedown` is
+still under it at `mouseup` → Chrome fires `click` → the Snap handler at
+`src/scripts/clicks.js:36` runs. **Measured** (seed `77172100`): a 240px real-mouse
+drag starting on `#tent` produced 2 bubbles and flipped
+`story["clicking tent"].fulfilled` to `true`; a control drag from empty sand
+produced 0 bubbles. With the premise chain met, the same gesture fires success
+`"08"` and arms the day→night switch — **story progression from what the player
+intended as a pan**. `onMouseDrag` (`makeSceneMovable.js:11`) has no
+drag-distance click suppression.
+
+*Fix shape:* track cumulative drag distance; past a ~5px threshold suppress the
+next `click` once, capture-phase. Note this interacts with the touch fix above —
+do the touch fix first, then this, since both live in `onMouseDrag`.
+
+---
+
+### DEFECT (LOW, confirmed) — double-click races the day→night transition and eats the never-seen arrival bubble
+
+Dismissing success bubble `"08"` synchronously runs `switchScene("night")` →
+`bubble([28])` (`scripts.js:31`), so click #2 of a double-click (~80ms later)
+lands on the freshly-spawned bubble 28 and dismisses it. **Measured:** `preDbl=1
+→ postDbl=0`, scene = night, `switchScene` count stayed 1, no stuck `has-bubble`,
+invariants clean. The player silently misses the "cannot sleep" arrival line;
+state stays consistent. Arguably genre-normal text-skipping — **UX polish, not a
+bug**. Same applies to the intro art sequence.
+
+### Verified CLEAN this run (new coverage)
+
+- **Assets:** all **53 runtime-reachable** assets 200 + exact case — every
+  referenced bubble SVG including the dynamic `bubble-${id}` ids, all 7 sound keys
+  x mp3+ogg including the dynamically-built `story[].sound` paths that the static
+  `regression-asset-case` spec cannot see, all 12 scene SVGs. Detached-`<audio>`
+  requests confirmed actually issued.
+- **6-seed x 260-step real-input fuzz** (clicks, drags, double-clicks, arrow nav,
+  left/right pan holds, clicks-mid-fade, 375x812 <-> 1280x800 resizes): 0 console
+  errors, 0 pageerrors, 0 unhandled rejections, 0 4xx, 0 request failures, 0
+  crashes, 0 dialogs, 0 NaN/Infinity on the **mouse** path (`currentLayer`, layer
+  lefts, ratio/width, bubble z-indexes), 0 layer-class invariant violations, 0
+  dead states, **CLS = 0** in every seed. Guarded seeds suppressed arrows during
+  bubbles so any violation would be provably new.
+- **Transition-cancel storm** (24 arrow presses at 45ms, inside the 500ms fade):
+  class invariants held mid-storm and after settling; the stale-`transitionend`-
+  listener accumulation in `switchLayer` is **empirically harmless**; panning
+  alive afterwards.
+- **Reload mid-story** (night, 3 bubbles up): clean fresh boot, flags reset, no
+  errors. **Back/forward x2:** fresh reload (no bfcache here), fully functional.
+- **Story completes end-to-end** with real input (`scaring the wolf` fulfilled),
+  zero errors/4xx.
+- **No new `switchScene` double-fires** (counter stayed 1 across transition races)
+  — the 2026-07-16 premise-refire fix holds under adversarial timing.
+- The known `currentLayer` desync backdoor did not fire in unguarded fuzz (the
+  bubble-up + arrow window is narrow under random input) — nothing new learned;
+  the existing fix plan stands. Known bubble-node leak observed again
+  (`bubbleTotal` up to 13) — already recorded, not re-filed.
+
+**Gate:** `npx playwright test` → **10/10 passed**, unchanged. Repo left clean.
