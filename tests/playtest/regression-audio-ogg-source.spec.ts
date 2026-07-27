@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+import { bootGame } from "./helpers";
 
 // Regression: the sound.js Audio() wrapper builds two <source>s for MP3/OGG
 // fallback, but the OGG source's `src` pointed at the ".mp3" file while being
@@ -6,9 +7,12 @@ import { test, expect } from "@playwright/test";
 // an MP3 relabeled as OGG -> decode fails -> silent, and the deliberately-shipped
 // .ogg twins were never requested (dead weight). Pre-fix FAILS (ogg src ends
 // .mp3); post-fix PASSES.
+//
+// That the .ogg twin actually exists on disk, with exact case, is covered for
+// every `new Audio()` key by regression-asset-case.spec.ts.
 
 test("Audio() OGG fallback source points at the .ogg file, MP3 at .mp3", async ({ page }) => {
-  await page.goto("/", { waitUntil: "networkidle" });
+  await bootGame(page);
 
   const sources = await page.evaluate(() => {
     // sound.js overrides the global Audio with its <audio>-building wrapper.
@@ -25,12 +29,4 @@ test("Audio() OGG fallback source points at the .ogg file, MP3 at .mp3", async (
   // Both a real MP3 and a real OGG source, each pointing at its own file type.
   expect(mp3?.src).toBe("snd/Intro1.mp3");
   expect(ogg?.src).toBe("snd/Intro1.ogg");
-});
-
-// Deploy safety: the .ogg twin the wrapper now points at must actually exist
-// (exact case) on the origin, or the fallback 404s on a case-sensitive host.
-test("the .ogg fallback file exists on the server (200)", async ({ page, request }) => {
-  await page.goto("/", { waitUntil: "networkidle" });
-  const res = await request.get("/snd/Intro1.ogg");
-  expect(res.status()).toBe(200);
 });

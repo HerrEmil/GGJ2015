@@ -2,29 +2,18 @@ function clickHandler(id) {
   for (const key in story) {
     const obj = story[key];
     if (obj.id === id) {
-      if (story[key].sound) {
-        const a = new Audio(story[key].sound);
+      if (obj.sound) {
+        const a = new Audio(obj.sound);
         a.play();
       }
-      if (obj.premise) {
-        // Gate on the step's OWN `fulfilled` too, exactly like the non-premise
-        // branch below. Without this guard the premise branch only checked the
-        // *premise's* flag, so once the prerequisite was met every further click
-        // re-fired the whole success set and re-armed `nextScene` (a repeated
-        // switchScene + ambience re-trigger, plus duplicate success bubbles).
-        if (story[obj.premise].fulfilled) {
-          if (!obj.fulfilled) {
-            bubble(obj.success, obj.nextScene ? () => switchScene(obj.nextScene) : undefined);
-            obj.fulfilled = true;
-          }
-        } else {
-          bubble(obj.locked);
-        }
-      } else {
-        if (!obj.fulfilled) {
-          bubble(obj.success);
-          obj.fulfilled = true;
-        }
+      // One success path, guarded once: `fulfilled` is what stops a step re-firing
+      // its success set or re-arming `nextScene` on a repeat click. Locked hints
+      // still repeat — `fulfilled` can only be set once the premise is met.
+      if (obj.premise && !story[obj.premise].fulfilled) {
+        bubble(obj.locked);
+      } else if (!obj.fulfilled) {
+        bubble(obj.success, obj.nextScene ? () => switchScene(obj.nextScene) : undefined);
+        obj.fulfilled = true;
       }
     }
   }

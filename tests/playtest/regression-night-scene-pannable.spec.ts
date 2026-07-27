@@ -1,4 +1,6 @@
 import { test, expect } from "@playwright/test";
+import type { Page } from "@playwright/test";
+import { bootGame, clearBubbles, dragScene } from "./helpers";
 
 // Regression: switching scenes (day -> night) must re-bind the drag / arrow-key
 // pan controller to the newly-visible scene. makeSceneMovable keeps a single
@@ -10,7 +12,7 @@ import { test, expect } from "@playwright/test";
 // rebind it. Pre-fix this FAILS (night layers don't move, hidden day ones do);
 // post-fix it PASSES.
 
-const readLefts = (page: import("@playwright/test").Page) =>
+const readLefts = (page: Page) =>
   page.evaluate(() => {
     const left = (id: string) =>
       parseFloat(document.getElementById(id)!.style.left || "0");
@@ -20,62 +22,37 @@ const readLefts = (page: import("@playwright/test").Page) =>
     };
   });
 
-test("night scene is pannable immediately after switchScene (controller rebinds)", async ({ page }) => {
-  await page.goto("/", { waitUntil: "networkidle" });
-  await page.evaluate(() => (window as any).dismissIntro?.());
+// The controller must follow the visible scene on every switch, not just the first.
+const CASES = [
+  { name: "night scene is pannable immediately after switchScene", switches: ["night"], moves: "night", frozen: "day" },
+  { name: "switching back to day re-binds the controller to the day scene", switches: ["night", "day"], moves: "day", frozen: "night" },
+] as const;
 
-  // Enter the night scene the way the story does.
-  await page.evaluate(() => (window as any).switchScene("night"));
+for (const { name, switches, moves, frozen } of CASES) {
+  test(`${name} (controller rebinds)`, async ({ page }) => {
+    await bootGame(page);
 
-  // Sanity: we actually switched scenes.
-  await expect(page.locator("#night")).not.toHaveClass(/hidden/);
-  await expect(page.locator("#day")).toHaveClass(/hidden/);
+    // Enter the scene(s) the way the story does.
+    for (const scene of switches) {
+      await page.evaluate((s) => (window as any).switchScene(s), scene);
+    }
 
-  // Clear the arrival bubble(s) so the drag lands cleanly on the scene body.
-  await page.evaluate(() =>
-    document.querySelectorAll(".bubble").forEach((b) => b.remove())
-  );
+    // Sanity: we actually landed on the scene under test.
+    await expect(page.locator(`#${moves}`)).not.toHaveClass(/hidden/);
+    await expect(page.locator(`#${frozen}`)).toHaveClass(/hidden/);
 
-  const before = await readLefts(page);
+    // Clear the arrival bubble(s) so the drag lands cleanly on the scene body.
+    await clearBubbles(page);
 
-  // A real horizontal drag across the scene body. Starting pan ratio is the
-  // resize-independent default (-1, mid-range), so this move is never clamped.
-  await page.mouse.move(640, 400);
-  await page.mouse.down();
-  await page.mouse.move(340, 400, { steps: 12 });
-  await page.mouse.up();
+    // Starting pan ratio is the resize-independent default (-1, mid-range), so
+    // this move is never clamped.
+    const before = await readLefts(page);
+    await dragScene(page);
+    const after = await readLefts(page);
 
-  const after = await readLefts(page);
-
-  // The visible NIGHT layers must have moved -- the whole point of the scene.
-  const nightMoved = before.night.some((v, i) => v !== after.night[i]);
-  expect(nightMoved).toBe(true);
-
-  // The hidden DAY layers must NOT move -- pre-fix the controller wrongly drove
-  // them instead of the night scene.
-  expect(after.day).toEqual(before.day);
-});
-
-// Guard: switching back night -> day re-binds to the day scene too, so the
-// controller always follows the visible scene (not just the first switch).
-test("switching back to day re-binds the controller to the day scene", async ({ page }) => {
-  await page.goto("/", { waitUntil: "networkidle" });
-  await page.evaluate(() => (window as any).dismissIntro?.());
-
-  await page.evaluate(() => (window as any).switchScene("night"));
-  await page.evaluate(() => (window as any).switchScene("day"));
-  await page.evaluate(() =>
-    document.querySelectorAll(".bubble").forEach((b) => b.remove())
-  );
-
-  const before = await readLefts(page);
-  await page.mouse.move(640, 400);
-  await page.mouse.down();
-  await page.mouse.move(340, 400, { steps: 12 });
-  await page.mouse.up();
-  const after = await readLefts(page);
-
-  const dayMoved = before.day.some((v, i) => v !== after.day[i]);
-  expect(dayMoved).toBe(true);
-  expect(after.night).toEqual(before.night);
-});
+    // The visible layers must have moved -- the whole point of the scene.
+    expect(before[moves].some((v, i) => v !== after[moves][i])).toBe(true);
+    // The hidden layers must NOT move -- pre-fix the controller wrongly drove them.
+    expect(after[frozen]).toEqual(before[frozen]);
+  });
+}

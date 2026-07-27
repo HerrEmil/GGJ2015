@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+import { bootGame, clearBubbles } from "./helpers";
 
 // Regression: a premise-gated story step must fire its success set exactly ONCE.
 //
@@ -13,12 +14,8 @@ import { test, expect } from "@playwright/test";
 // The fix adds the symmetric `if (!obj.fulfilled)` guard around the premise
 // branch's success path. These tests are proven to FAIL pre-fix and PASS post-fix.
 
-const countBubbles = (page: import("@playwright/test").Page) =>
-  page.evaluate(() => document.querySelectorAll(".bubble").length);
-
 test("a fulfilled premise-gated step does not re-fire its success bubbles on repeat clicks", async ({ page }) => {
-  await page.goto("/", { waitUntil: "networkidle" });
-  await page.evaluate(() => (window as any).dismissIntro?.());
+  await bootGame(page);
 
   const counts = await page.evaluate(() => {
     const w = window as any;
@@ -47,8 +44,7 @@ test("a fulfilled premise-gated step does not re-fire its success bubbles on rep
 });
 
 test("a fulfilled premise-gated step does not re-arm its nextScene transition", async ({ page }) => {
-  await page.goto("/", { waitUntil: "networkidle" });
-  await page.evaluate(() => (window as any).dismissIntro?.());
+  await bootGame(page);
 
   const sceneCalls = await page.evaluate(() => {
     const w = window as any;
@@ -84,13 +80,11 @@ test("a fulfilled premise-gated step does not re-arm its nextScene transition", 
 });
 
 test("the guard does not over-gate: locked hint still shows until the premise is met", async ({ page }) => {
-  await page.goto("/", { waitUntil: "networkidle" });
-  await page.evaluate(() => (window as any).dismissIntro?.());
+  await bootGame(page);
+  await clearBubbles(page);
 
   const result = await page.evaluate(() => {
     const w = window as any;
-    document.querySelectorAll(".bubble").forEach((b) => b.remove());
-
     // Premise "clicking tent" NOT yet met -> dead tree shows its locked text hint,
     // and the success art bubbles ("10","11") must NOT appear.
     w.clickHandler("dead_x5F_tree_3_");

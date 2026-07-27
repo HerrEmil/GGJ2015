@@ -33,6 +33,17 @@ function onMouseDrag(callback) {
 let _sceneState = null;
 const layerFactors = [0.5, 1, 2];
 
+// A scene's three currently-visible layers, in the same background -> foreground
+// order as layerFactors. This class triple is the layers contract, so it lives
+// next to the code that consumes it rather than at each call site.
+function activeLayers(container) {
+  return [
+    container.querySelector(".layer--half"),
+    container.querySelector(".layer--normal"),
+    container.querySelector(".layer--twice"),
+  ];
+}
+
 function applyPosition() {
   const { layers, width, positionRatio } = _sceneState;
   for (let i = 0; i < 3; i++) {

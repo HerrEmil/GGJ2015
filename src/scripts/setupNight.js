@@ -17,10 +17,5 @@ function setupNight(container) {
   });
 
   // Make visible night layers moveable
-  const layers = [
-    container.querySelector(".layer--half"),
-    container.querySelector(".layer--normal"),
-    container.querySelector(".layer--twice"),
-  ];
-  makeSceneMovable(container, layers);
+  makeSceneMovable(container, activeLayers(container));
 }

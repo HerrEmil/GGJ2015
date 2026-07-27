@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+import { bootGame } from "./helpers";
 
 // Regression: clicking the dead tree BEFORE the tent hits story `getting a club`'s
 // `locked: "It´s a tree."` branch. That hint is plain text, not an SVG id, so the
@@ -14,8 +15,7 @@ test("locked text hint renders as a legible bubble, not a broken one", async ({ 
     if (r.status() >= 400) failedRequests.push(`${r.status()} ${r.url()}`);
   });
 
-  await page.goto("/", { waitUntil: "networkidle" });
-  await page.evaluate(() => (window as any).dismissIntro?.());
+  await bootGame(page);
 
   // Click the dead tree before the tent -> locked "It´s a tree." hint.
   const bubble = await page.evaluate(() => {
@@ -40,8 +40,7 @@ test("locked text hint renders as a legible bubble, not a broken one", async ({ 
 
 // Guard: the normal numeric-id bubble path (SVG art) is unchanged by the fix.
 test("numeric bubble ids still render their SVG art with a valid z-index", async ({ page }) => {
-  await page.goto("/", { waitUntil: "networkidle" });
-  await page.evaluate(() => (window as any).dismissIntro?.());
+  await bootGame(page);
 
   // Clicking the tent matches two story entries (`clicking tent` -> success "05"
   // and `sleeping in tent` -> locked "06"), so several numeric-id bubbles appear.
