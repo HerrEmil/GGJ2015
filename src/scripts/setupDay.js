@@ -17,6 +17,6 @@ function setupDay(container) {
   });
 
   // Make visible day layers moveable
-  makeSceneMovable(container, activeLayers(container));
+  makeSceneMovable(container);
   return container;
 }

@@ -11,7 +11,7 @@ function switchScene(sceneID) {
 
   // makeSceneMovable holds a single module-level _sceneState, so every scene swap
   // must rebind it or the pan controller keeps driving the now-hidden scene.
-  makeSceneMovable(newScene, activeLayers(newScene));
+  makeSceneMovable(newScene);
 
   if (sceneID === "night") {
     const amb = new Audio("amb/138288__kangaroovindaloo__desert-at-night");

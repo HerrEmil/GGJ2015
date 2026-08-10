@@ -22,37 +22,41 @@ const readLefts = (page: Page) =>
     };
   });
 
-// The controller must follow the visible scene on every switch, not just the first.
-const CASES = [
-  { name: "night scene is pannable immediately after switchScene", switches: ["night"], moves: "night", frozen: "day" },
-  { name: "switching back to day re-binds the controller to the day scene", switches: ["night", "day"], moves: "day", frozen: "night" },
-] as const;
+// The controller must follow the visible scene on every switch, not just the
+// first: after the last switch, the landed-on scene must pan and the other must
+// stay frozen.
+async function expectPanFollowsScene(page: Page, switches: ("day" | "night")[]) {
+  const moves = switches[switches.length - 1];
+  const frozen = moves === "day" ? "night" : "day";
 
-for (const { name, switches, moves, frozen } of CASES) {
-  test(`${name} (controller rebinds)`, async ({ page }) => {
-    await bootGame(page);
+  await bootGame(page);
 
-    // Enter the scene(s) the way the story does.
-    for (const scene of switches) {
-      await page.evaluate((s) => (window as any).switchScene(s), scene);
-    }
+  // Enter the scene(s) the way the story does.
+  for (const scene of switches) {
+    await page.evaluate((s) => (window as any).switchScene(s), scene);
+  }
 
-    // Sanity: we actually landed on the scene under test.
-    await expect(page.locator(`#${moves}`)).not.toHaveClass(/hidden/);
-    await expect(page.locator(`#${frozen}`)).toHaveClass(/hidden/);
+  // Sanity: we actually landed on the scene under test.
+  await expect(page.locator(`#${moves}`)).not.toHaveClass(/hidden/);
+  await expect(page.locator(`#${frozen}`)).toHaveClass(/hidden/);
 
-    // Clear the arrival bubble(s) so the drag lands cleanly on the scene body.
-    await clearBubbles(page);
+  // Clear the arrival bubble(s) so the drag lands cleanly on the scene body.
+  await clearBubbles(page);
 
-    // Starting pan ratio is the resize-independent default (-1, mid-range), so
-    // this move is never clamped.
-    const before = await readLefts(page);
-    await dragScene(page);
-    const after = await readLefts(page);
+  // Starting pan ratio is the resize-independent default (-1, mid-range), so
+  // this move is never clamped.
+  const before = await readLefts(page);
+  await dragScene(page);
+  const after = await readLefts(page);
 
-    // The visible layers must have moved -- the whole point of the scene.
-    expect(before[moves].some((v, i) => v !== after[moves][i])).toBe(true);
-    // The hidden layers must NOT move -- pre-fix the controller wrongly drove them.
-    expect(after[frozen]).toEqual(before[frozen]);
-  });
+  // The visible layers must have moved -- the whole point of the scene.
+  expect(before[moves].some((v, i) => v !== after[moves][i])).toBe(true);
+  // The hidden layers must NOT move -- pre-fix the controller wrongly drove them.
+  expect(after[frozen]).toEqual(before[frozen]);
 }
+
+test("night scene is pannable immediately after switchScene (controller rebinds)", ({ page }) =>
+  expectPanFollowsScene(page, ["night"]));
+
+test("switching back to day re-binds the controller to the day scene (controller rebinds)", ({ page }) =>
+  expectPanFollowsScene(page, ["night", "day"]));

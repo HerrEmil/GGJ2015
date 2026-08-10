@@ -17,5 +17,5 @@ function setupNight(container) {
   });
 
   // Make visible night layers moveable
-  makeSceneMovable(container, activeLayers(container));
+  makeSceneMovable(container);
 }

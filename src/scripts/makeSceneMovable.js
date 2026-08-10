@@ -34,8 +34,8 @@ let _sceneState = null;
 const layerFactors = [0.5, 1, 2];
 
 // A scene's three currently-visible layers, in the same background -> foreground
-// order as layerFactors. This class triple is the layers contract, so it lives
-// next to the code that consumes it rather than at each call site.
+// order as layerFactors. This is makeSceneMovable's default layer set; only a
+// caller whose layer classes are mid-transition needs to pass its own.
 function activeLayers(container) {
   return [
     container.querySelector(".layer--half"),
@@ -51,7 +51,10 @@ function applyPosition() {
   }
 }
 
-function makeSceneMovable(container, layers) {
+// `layers` defaults to the container's active triple; switchLayer overrides it
+// because during its fade the leaving layer still carries its old type class,
+// so a re-query mid-transition would grab the wrong element.
+function makeSceneMovable(container, layers = activeLayers(container)) {
   if (!_sceneState) {
     // Position stored as ratio of container width (-2 to 0), resize-independent
     _sceneState = { positionRatio: -1, layers, container, width: container.offsetWidth };

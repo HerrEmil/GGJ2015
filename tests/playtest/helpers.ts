@@ -2,17 +2,13 @@ import type { Page } from "@playwright/test";
 
 /**
  * Load the game and dismiss the intro bubble, leaving a clean interactive scene.
- * The page's scripts are plain synchronous <script> tags, so waiting for the
- * globals they declare is a tighter signal than waiting on network quiet.
+ * The page's scripts are plain synchronous <script> tags and the bootstrap runs
+ * in a trailing inline script, so goto's default `load` wait already guarantees
+ * the game is ready — no extra readiness poll needed.
  */
 export async function bootGame(page: Page) {
   await page.goto("/");
-  await page.waitForFunction(
-    () =>
-      typeof (window as any).clickHandler === "function" &&
-      typeof (window as any).switchScene === "function",
-  );
-  await page.evaluate(() => (window as any).dismissIntro?.());
+  await page.evaluate(() => (window as any).dismissIntro());
 }
 
 /** Remove every bubble, so a following assertion counts only what it triggers. */

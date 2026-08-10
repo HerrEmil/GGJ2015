@@ -1,5 +1,4 @@
 import { test, expect } from "@playwright/test";
-import { bootGame } from "./helpers";
 
 // Regression: the sound.js Audio() wrapper builds two <source>s for MP3/OGG
 // fallback, but the OGG source's `src` pointed at the ".mp3" file while being
@@ -12,7 +11,9 @@ import { bootGame } from "./helpers";
 // every `new Audio()` key by regression-asset-case.spec.ts.
 
 test("Audio() OGG fallback source points at the .ogg file, MP3 at .mp3", async ({ page }) => {
-  await bootGame(page);
+  // Plain load, not bootGame: this test only inspects the Audio wrapper, and
+  // dismissing the intro would fetch the intro music + ambience for nothing.
+  await page.goto("/");
 
   const sources = await page.evaluate(() => {
     // sound.js overrides the global Audio with its <audio>-building wrapper.

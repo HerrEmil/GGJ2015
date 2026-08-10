@@ -3,16 +3,15 @@ import { bootGame, clearBubbles } from "./helpers";
 
 // Regression: a premise-gated story step must fire its success set exactly ONCE.
 //
-// `clickHandler` (src/scripts/clicks.js) has two branches. The non-premise branch
-// guards re-fires with `if (!obj.fulfilled)`. The premise branch used to gate only
-// on the *premise's* flag (`story[obj.premise].fulfilled`) and never on the step's
-// OWN `obj.fulfilled` -- it wrote `obj.fulfilled = true` but never read it. So once
-// the prerequisite was met, every further click on that target re-fired the whole
-// success set: duplicate success bubbles, and (for a step with `nextScene`) a
-// repeated `switchScene(...)` + ambience re-trigger.
+// Contract (`clickHandler`, src/scripts/clicks.js): a step's own `fulfilled` flag
+// suppresses every repeat firing of its success bubbles and its `nextScene`
+// arming; only the locked hint may repeat. Pre-fix the premise-gated path read
+// only the *premise's* flag -- it wrote `obj.fulfilled = true` but never read it --
+// so once the prerequisite was met, every further click on that target re-fired
+// the whole success set: duplicate success bubbles, and (for a step with
+// `nextScene`) a repeated `switchScene(...)` + ambience re-trigger.
 //
-// The fix adds the symmetric `if (!obj.fulfilled)` guard around the premise
-// branch's success path. These tests are proven to FAIL pre-fix and PASS post-fix.
+// These tests are proven to FAIL pre-fix and PASS post-fix.
 
 test("a fulfilled premise-gated step does not re-fire its success bubbles on repeat clicks", async ({ page }) => {
   await bootGame(page);
